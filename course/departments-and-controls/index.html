@@ -1,0 +1,2532 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson · GrowthX teach</title>
+<meta name="generator" content="GrowthX teach">
+<style>
+/* =====================================================================
+ * GrowthX teach theme: colours and fonts
+ *
+ * Copied once to ~/growthx-teach/theme.css and inlined into every lesson
+ * by build.sh, so the agent never writes CSS. Edit the values here to
+ * restyle all future lessons; rebuild a lesson to restyle an old one.
+ * Layout and components live in the skill (assets/base.css) and update
+ * with it.
+ *
+ * Lessons and the library open light (data-theme="light" on <html>)
+ * until the learner switches. Without data-theme, :root is dark and
+ * prefers-color-scheme: light switches it.
+ * ===================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap");
+
+:root {
+  /* dark = the GrowthX community palette: 900 greys, not pure black */
+  --bg: #171717;
+  --bg-2: #1c1c1e;
+  --fg: #f5f5f5;
+  --muted: #9ca3af;
+  --card: #222529;
+  --card-2: #2a2d32;
+  --hairline: rgba(255, 255, 255, 0.1);
+  --hairline-2: rgba(255, 255, 255, 0.18);
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass-2: rgba(255, 255, 255, 0.1);
+
+  --g1: #f5f5f5;
+  /* dark gets its own brand shades: fills behind white text stay deep,
+     text and icons on grey go lighter so both pass WCAG AA */
+  --g2: #9f7fff;
+  --g3: #5c9dff;
+  --brand: #1f66f0;
+  --brand-text: #5c9dff;
+  --brand-fg: #ffffff;
+  --violet: #a78bfa;
+  --green: #5cc98a;
+  --green-bg: rgba(92, 201, 138, 0.12);
+  --red: #f0705c;
+  --red-bg: rgba(240, 112, 92, 0.12);
+  --amber: #e8a838;
+  --amber-bg: rgba(232, 168, 56, 0.12);
+
+  --code-bg: #1c1c1e;
+  --code-fg: #d1d5db;
+
+  --hero-glow:
+    radial-gradient(1100px 560px at 15% -10%, rgba(86, 30, 255, 0.14), transparent 60%),
+    radial-gradient(900px 480px at 90% 0%, rgba(0, 100, 255, 0.1), transparent 60%);
+
+  --sans: "Gilroy", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 100px;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #fafafa;
+    --bg-2: #ffffff;
+    --fg: hsl(0 0% 9%);
+    --muted: hsl(0 0% 40%);
+    --card: #ffffff;
+    --card-2: #f4f4f6;
+    --hairline: rgba(0, 0, 0, 0.08);
+    --hairline-2: rgba(0, 0, 0, 0.16);
+    --glass: rgba(0, 0, 0, 0.03);
+    --glass-2: rgba(0, 0, 0, 0.06);
+    --g1: #18181b;
+    --g2: #561eff;
+    --g3: #0064ff;
+    --brand: #0064ff;
+    --brand-text: #0057e0;
+    --violet: #6d28d9;
+    --green: #137537;
+    --green-bg: rgba(22, 163, 74, 0.08);
+    --red: #b33a0a;
+    --red-bg: rgba(220, 38, 38, 0.07);
+    --amber: #a14a08;
+    --amber-bg: rgba(217, 119, 6, 0.08);
+    --code-bg: #f4f4f6;
+    --code-fg: #1f2937;
+    --hero-glow:
+      radial-gradient(1100px 560px at 15% -10%, rgba(86, 30, 255, 0.08), transparent 60%),
+      radial-gradient(900px 480px at 90% 0%, rgba(0, 100, 255, 0.06), transparent 60%);
+    color-scheme: light;
+  }
+}
+
+/* Diagrams (.anim) always use the light palette, even on a dark page. */
+:root[data-theme="light"],
+.anim {
+  --bg: #fafafa;
+  --bg-2: #ffffff;
+  --fg: hsl(0 0% 9%);
+  --muted: hsl(0 0% 40%);
+  --card: #ffffff;
+  --card-2: #f4f4f6;
+  --hairline: rgba(0, 0, 0, 0.08);
+  --hairline-2: rgba(0, 0, 0, 0.16);
+  --glass: rgba(0, 0, 0, 0.03);
+  --glass-2: rgba(0, 0, 0, 0.06);
+  --g1: #18181b;
+  --g2: #561eff;
+  --g3: #0064ff;
+  --brand: #0064ff;
+  --brand-text: #0057e0;
+  --violet: #6d28d9;
+  --green: #137537;
+  --green-bg: rgba(22, 163, 74, 0.08);
+  --red: #b33a0a;
+  --red-bg: rgba(220, 38, 38, 0.07);
+  --amber: #a14a08;
+  --amber-bg: rgba(217, 119, 6, 0.08);
+  --code-bg: #f4f4f6;
+  --code-fg: #1f2937;
+  --hero-glow:
+    radial-gradient(1100px 560px at 15% -10%, rgba(86, 30, 255, 0.08), transparent 60%),
+    radial-gradient(900px 480px at 90% 0%, rgba(0, 100, 255, 0.06), transparent 60%);
+  color-scheme: light;
+}
+/* =====================================================================
+ * GrowthX teach base styles: layout and components.
+ * Ships with the skill and updates with it. Colours and fonts come from
+ * the tokens in theme.css.
+ * ===================================================================== */
+
+/* ===== Base ===== */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  background-image: var(--hero-glow);
+  background-repeat: no-repeat;
+  color: var(--fg);
+  font: 400 16px/1.65 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { margin: 0; text-wrap: balance; line-height: 1.15; }
+p { margin: 0; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--brand-text, var(--brand)); outline-offset: 2px; border-radius: 4px; }
+code { font-family: var(--mono); font-size: 0.88em; background: var(--glass-2); padding: 1px 6px; border-radius: 5px; }
+strong { font-weight: 650; }
+.wrap { max-width: 860px; margin: 0 auto; padding-inline: 20px; }
+.eyebrow { font: 500 11px/1.4 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.serif { font-family: var(--serif); font-weight: 400; }
+.grad {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  background: linear-gradient(100deg, var(--g1), var(--g2) 55%, var(--g3));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  padding-right: 0.06em;
+}
+
+/* ===== Top bar ===== */
+.progress { position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 30; background: transparent; }
+.progress span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--g2), var(--g3)); transition: width 0.1s linear; }
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--hairline);
+}
+/* On a lesson the bar lines up with the sidebar and content below it. */
+.topbar .wrap.topbar-lesson { max-width: 1080px; }
+.topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 7px; text-decoration: none; font-weight: 700; letter-spacing: -0.01em; }
+.brand .grad { font-size: 1.15em; line-height: 1; }
+.brand-logo { display: block; height: 22px; width: auto; color: #000; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand-logo { color: #fff; } }
+:root[data-theme="dark"] .brand-logo { color: #fff; }
+/* The X mark's own blue is too faint on a light page; deepen it there only. */
+.brand-logo [fill="#3096FF"] { fill: #1a7fe6; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand-logo [fill="#3096FF"] { fill: #3096ff; } }
+:root[data-theme="dark"] .brand-logo [fill="#3096FF"] { fill: #3096ff; }
+.controls { display: flex; align-items: center; gap: 8px; }
+.seg { display: inline-flex; border: 1px solid var(--hairline-2); border-radius: var(--radius-pill); padding: 2px; background: var(--glass); }
+.seg button { border: 0; background: none; padding: 5px 12px; border-radius: var(--radius-pill); cursor: pointer; font-size: 13px; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.icon-btn { border: 1px solid var(--hairline-2); background: var(--glass); border-radius: var(--radius-pill); width: 32px; height: 32px; cursor: pointer; }
+
+/* ===== Lesson layout: sidebar + content ===== */
+.layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 40px; max-width: 1080px; align-items: start; }
+.content { min-width: 0; }
+.sidebar { position: sticky; top: calc(var(--topbar-h, 52px) + 16px); padding-block: 40px 24px; display: grid; gap: 10px; max-height: calc(100vh - var(--topbar-h, 52px) - 16px); overflow-y: auto; }
+.sidebar ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.sidebar a { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: var(--radius-sm); text-decoration: none; color: var(--muted); font-size: 14px; line-height: 1.35; }
+.sidebar a:hover { background: var(--glass); color: var(--fg); }
+.sidebar a.active { background: var(--glass-2); color: var(--fg); font-weight: 600; }
+.sidebar .tick {
+  flex: none; width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--hairline-2);
+  display: inline-grid; place-items: center; font: 500 10.5px var(--mono); color: var(--muted);
+}
+.sidebar a.active .tick { border-color: var(--brand-text, var(--brand)); color: var(--brand-text, var(--brand)); }
+.sidebar a.done .tick { background: var(--brand); border-color: var(--brand); color: transparent; position: relative; }
+.sidebar a.done .tick::after { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--brand-fg); font-size: 11px; }
+.side-title { padding-left: 10px; }
+
+.in-work { border: 1px solid color-mix(in srgb, var(--brand) 45%, transparent); background: color-mix(in srgb, var(--brand) 7%, var(--card)); border-radius: var(--radius-sm); padding: 12px 16px; display: grid; gap: 4px; }
+.in-work .eyebrow { color: var(--brand-text, var(--brand)); }
+
+/* ===== Hero ===== */
+.hero { padding-block: 56px 28px; display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(34px, 6vw, 56px); font-weight: 700; letter-spacing: -0.025em; }
+.lede { font-size: 19px; color: var(--muted); max-width: 62ch; }
+.goal { border: 1px solid var(--hairline-2); background: var(--glass); border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 4px; }
+.goal p { font-size: 17px; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { display: inline-block; text-decoration: none; font-size: 13px; border: 1px solid var(--hairline-2); border-radius: var(--radius-pill); padding: 5px 12px; background: var(--glass); }
+.pill:hover { background: var(--glass-2); }
+
+/* ===== Sections ===== */
+section.block { padding-block: 40px; border-top: 1px solid var(--hairline); display: grid; gap: 20px; }
+.sec-head { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.session-about { font-size: 19px; font-weight: 600; line-height: 1.45; }
+.session-learn { border: 1px solid var(--hairline-2); background: var(--glass); border-radius: var(--radius); padding: 14px 18px; display: grid; gap: 8px; }
+.session-learn ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.session-learn li::marker { color: var(--brand-text, var(--brand)); }
+.session-learn a { color: var(--fg); text-decoration-color: color-mix(in srgb, var(--brand) 50%, transparent); text-underline-offset: 3px; }
+.sec-num { font: 500 12px var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand-text, var(--brand)); }
+.concept-head { flex-wrap: wrap; row-gap: 4px; }
+.concept-label { font: 500 13px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-text, var(--brand)); white-space: nowrap; }
+.definition { font-size: 17.5px; line-height: 1.7; }
+
+/* ===== Concept: story → analogy → animation ===== */
+.story { font-size: 18px; line-height: 1.7; color: var(--fg); }
+.analogy {
+  border: 1px solid color-mix(in srgb, var(--amber) 35%, transparent);
+  background: color-mix(in srgb, var(--amber) 9%, var(--card));
+  border-radius: var(--radius); padding: 16px 20px; display: grid; gap: 6px;
+}
+.analogy .eyebrow { color: var(--amber); }
+.analogy .prose { font-size: 17px; line-height: 1.7; }
+/* ===== Animated figures =====
+   Anything with data-beat starts faint and comes on when the player reaches
+   its beat (.on); the beat being played is .now. .still is the finished
+   picture, shown when motion is turned off. */
+.anim {
+  color: var(--fg); margin: 0; border: 1px solid var(--hairline); border-radius: var(--radius); padding: 16px 18px 18px;
+  background-color: var(--bg-2);
+  background-image: radial-gradient(color-mix(in srgb, var(--fg) 10%, transparent) 1px, transparent 1.2px);
+  background-size: 18px 18px; display: grid; gap: 14px; font-size: 14.5px; line-height: 1.4;
+}
+.anim-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.anim-head strong { font-weight: 650; }
+.anim-btn {
+  flex: none; font: 500 12px var(--mono); color: var(--muted); background: var(--card); cursor: pointer;
+  border: 1px solid var(--hairline-2); border-radius: var(--radius-pill); padding: 4px 10px;
+}
+.anim-btn:hover { color: var(--fg); }
+.anim figcaption { color: var(--muted); text-align: center; text-wrap: balance; max-width: 60ch; justify-self: center; }
+.anim-alt { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.anim [data-beat] { transition: opacity 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease, transform 0.35s ease; }
+
+/* flow: steps light up one after another */
+.af { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 26px; }
+.af li {
+  position: relative; display: grid; gap: 4px; align-content: start; min-width: 0; opacity: 0.32;
+  border: 1.5px solid var(--hairline-2); border-radius: 10px; background: var(--card); padding: 12px 12px 12px;
+}
+.af li.on { opacity: 1; }
+.af li.now { border-color: var(--brand); box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 22%, transparent); }
+.af-n { font: 500 11px var(--mono); color: var(--brand-text, var(--brand)); }
+.af li > span:last-child { color: var(--muted); }
+.af li:not(:last-child)::after {
+  content: "→"; position: absolute; right: -21px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); opacity: 0.35; transition: opacity 0.35s ease, color 0.35s ease;
+}
+.af li.on:not(:last-child)::after { opacity: 1; color: var(--brand-text, var(--brand)); }
+
+/* compare: the left side plays out, then the right */
+.ac { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: stretch; }
+.ac-vs { align-self: center; font: 500 12px var(--mono); color: var(--muted); }
+.ac-side { --tone: var(--hairline-2); display: grid; gap: 10px; align-content: start; min-width: 0; opacity: 0.45;
+  border: 1.5px solid var(--hairline-2); border-radius: 10px; background: var(--card); padding: 12px 14px; }
+.ac-side.tone-good { --tone: var(--green); }
+.ac-side.tone-bad { --tone: var(--red); }
+.ac-side.on { opacity: 1; border-color: var(--tone); }
+.ac-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ac-mark { font-style: normal; font-weight: 700; color: var(--tone); opacity: 0; transform: scale(0.5); }
+.ac-mark.on { opacity: 1; transform: none; }
+.ac-side ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.ac-side li { opacity: 0; transform: translateY(4px); border-radius: 6px; padding: 5px 8px; background: color-mix(in srgb, var(--tone) 10%, transparent); }
+.ac-side li.on { opacity: 1; transform: none; }
+.ac-side li.now { background: color-mix(in srgb, var(--tone) 26%, transparent); }
+
+/* sequence: a message travels between actors while a log fills in below */
+.as { --gap: 14px; --col: calc((100% - (var(--n) - 1) * var(--gap)) / var(--n)); display: grid; gap: 4px; }
+.as-actors { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: var(--gap); }
+.as-actor {
+  display: grid; gap: 3px; align-content: start; justify-items: center; text-align: center; min-width: 0; min-height: 86px;
+  border: 1.5px solid var(--hairline-2); border-radius: 10px; background: var(--card); padding: 10px 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.as-actor.now, .as-actor.recv { border-color: var(--brand); box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 22%, transparent); }
+.as-role { color: var(--muted); font-size: 13px; }
+.as-state { margin-top: 4px; font-size: 13px; border-radius: 6px; padding: 2px 8px; background: color-mix(in srgb, var(--amber) 16%, transparent); }
+.as-state:empty { display: none; }
+.as-lane { position: relative; height: 46px; }
+.as-lane::before {
+  content: ""; position: absolute; top: 50%; left: calc(var(--col) / 2); right: calc(var(--col) / 2);
+  border-top: 1.5px dashed var(--hairline-2);
+}
+.as-msg {
+  --at: 0; position: absolute; top: 50%; left: calc(var(--col) * (var(--at) + 0.5) + var(--at) * var(--gap));
+  transform: translate(-50%, -50%); max-width: 70%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 13px; font-weight: 550; color: var(--brand-fg); background: var(--brand); border-radius: var(--radius-pill); padding: 4px 11px;
+  opacity: 0; transition: left 0.9s cubic-bezier(0.45, 0, 0.25, 1), opacity 0.25s ease;
+}
+.as-msg.show { opacity: 1; }
+.as-log { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; counter-reset: beat; }
+.as-log li { counter-increment: beat; display: grid; grid-template-columns: 18px minmax(0, 11rem) 1fr; gap: 8px; align-items: baseline; opacity: 0.22; border-radius: 6px; padding: 3px 6px; }
+.as-log li::before { content: counter(beat); font: 500 11px var(--mono); color: var(--brand-text, var(--brand)); }
+.as-log li.on { opacity: 1; }
+.as-log li.now { background: color-mix(in srgb, var(--brand) 12%, transparent); }
+.as-who { color: var(--muted); }
+
+.anim.still [data-beat], .anim.still .af li:not(:last-child)::after { transition: none; }
+.anim.still .as-lane { display: none; }
+@media (max-width: 640px) {
+  .af { grid-template-columns: 1fr; gap: 22px; }
+  .af li:not(:last-child)::after { content: "↓"; right: auto; left: 16px; top: auto; bottom: -20px; transform: none; }
+  .ac { grid-template-columns: 1fr; }
+  .ac-vs { justify-self: center; }
+  .as-log li { grid-template-columns: 18px 1fr; }
+  .as-log li .as-who { grid-column: 2; }
+  .as-log li > span:last-child { grid-column: 2; }
+}
+.sub { display: grid; gap: 8px; }
+.sub h3 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+.sub .prose { font-size: 16.5px; }
+.videos { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.videos li { border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--card); padding: 14px 16px; display: grid; gap: 4px; }
+.video-link { display: flex; align-items: baseline; gap: 10px; text-decoration: none; font-weight: 650; }
+.video-link:hover .video-title { text-decoration: underline; }
+.video-start { flex: none; font: 600 13px var(--mono); color: var(--brand-fg); background: var(--red); border-radius: 6px; padding: 2px 7px; }
+.video-meta { font: 12.5px var(--mono); color: var(--muted); }
+.video-why { color: var(--muted); font-size: 15px; }
+/* "Did you know?": a side note, set apart from the learning sections */
+.fact {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: start;
+  border: 1px dashed color-mix(in srgb, var(--violet) 55%, transparent); border-radius: 16px;
+  background: color-mix(in srgb, var(--violet) 7%, var(--card)); padding: 16px 18px; margin-top: 4px;
+}
+.fact-icon { width: 26px; height: 26px; color: var(--violet); margin-top: 2px; }
+.fact-label { display: block; font: 600 12px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--violet); margin-bottom: 4px; }
+.fact .prose { font-size: 15.5px; font-style: italic; color: var(--fg); }
+
+/* ===== Jargon ===== */
+.term {
+  background: color-mix(in srgb, var(--violet) 16%, transparent); color: inherit; cursor: help;
+  border-radius: 5px; padding: 0 4px; box-decoration-break: clone; -webkit-box-decoration-break: clone;
+  border-bottom: 1.5px solid color-mix(in srgb, var(--violet) 55%, transparent); transition: background 0.15s;
+}
+.term:hover, .term:focus-visible, .term.active { background: color-mix(in srgb, var(--violet) 30%, transparent); outline: none; }
+.term-tip {
+  position: fixed; z-index: 50; max-width: min(300px, calc(100vw - 16px)); padding: 10px 12px;
+  background: var(--fg); color: var(--bg); border-radius: var(--radius-sm); font-size: 14px; line-height: 1.5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); pointer-events: none;
+}
+.sec-head h2 { font-size: clamp(26px, 4vw, 34px); font-weight: 700; letter-spacing: -0.02em; }
+.prose { display: grid; gap: 12px; max-width: 68ch; }
+.lens-blocks { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.lens-blocks[data-count="1"] { grid-template-columns: 1fr; }
+.lens-card { border: 1px solid var(--hairline); border-radius: var(--radius); padding: 14px 16px; background: var(--card); display: grid; gap: 6px; min-width: 0; }
+
+.examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.example { border: 1px solid var(--hairline); border-radius: var(--radius); padding: 14px 16px; background: var(--card); display: grid; gap: 6px; align-content: start; min-width: 0; }
+.example.own { border-color: color-mix(in srgb, var(--brand) 55%, transparent); background: color-mix(in srgb, var(--brand) 7%, var(--card)); }
+.example h4 { font-size: 16px; }
+.chip { justify-self: start; font: 500 10.5px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 8px; border-radius: var(--radius-pill); border: 1px solid var(--hairline-2); color: var(--muted); }
+.example.own .chip { color: var(--brand-text, var(--brand)); border-color: currentColor; }
+
+.visual { border: 1px solid var(--hairline); border-radius: var(--radius); padding: 16px; background: var(--bg-2); display: grid; gap: 12px; }
+.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 10px; counter-reset: step; }
+.flow li { position: relative; border: 1px solid var(--hairline-2); border-radius: var(--radius-sm); padding: 10px 12px; background: var(--card); counter-increment: step; display: grid; gap: 4px; min-width: 0; }
+.flow li::before { content: counter(step, decimal-leading-zero); font: 500 11px var(--mono); color: var(--brand-text, var(--brand)); }
+.flow li:not(:last-child)::after { content: "→"; position: absolute; right: -9px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; }
+.flow b { font-size: 14px; line-height: 1.3; }
+.flow span { font-size: 13px; color: var(--muted); line-height: 1.45; }
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.compare > div { border: 1px solid var(--hairline-2); border-radius: var(--radius-sm); padding: 12px 14px; background: var(--card); min-width: 0; }
+.compare ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14.5px; }
+
+pre.code { margin: 0; overflow-x: auto; background: var(--code-bg); color: var(--code-fg); border: 1px solid var(--hairline); border-radius: var(--radius-sm); padding: 14px 16px; font: 13px/1.6 var(--mono); }
+.code-wrap { display: grid; gap: 6px; }
+.callout { border-left: 3px solid var(--amber); background: var(--amber-bg); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 16px; display: grid; gap: 4px; }
+.callout .eyebrow { color: var(--amber); }
+
+/* ===== Quiz ===== */
+.score { font: 500 13px var(--mono); color: var(--muted); }
+.question { border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--card); padding: 18px; display: grid; gap: 12px; }
+.question h3 { font-size: 18px; line-height: 1.4; font-weight: 600; }
+.options { display: grid; gap: 8px; }
+.option {
+  text-align: left; cursor: pointer; border: 1px solid var(--hairline-2); background: var(--glass);
+  border-radius: var(--radius-sm); padding: 10px 14px; display: grid; gap: 4px; transition: background 0.15s, border-color 0.15s;
+}
+.option:hover:not(:disabled) { background: var(--glass-2); }
+.option:disabled { cursor: default; }
+.option .why { font-size: 14px; color: var(--muted); }
+.option.right { border-color: var(--green); background: var(--green-bg); }
+.option.wrong { border-color: var(--red); background: var(--red-bg); }
+.option.dim { opacity: 0.55; }
+.quiz-done { border: 1px solid var(--hairline-2); border-radius: var(--radius); padding: 18px; display: grid; gap: 10px; background: var(--glass); }
+.btn { display: inline-flex; align-items: center; gap: 6px; justify-self: start; cursor: pointer; text-decoration: none; border: 1px solid var(--hairline-2); background: var(--glass); border-radius: var(--radius-pill); padding: 7px 14px; font-size: 14px; }
+.btn:hover { background: var(--glass-2); }
+.btn.primary { background: var(--brand); border-color: var(--brand); color: var(--brand-fg); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ===== Next + share ===== */
+.next-list { display: grid; gap: 10px; }
+.next-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid var(--hairline); border-radius: var(--radius); padding: 12px 16px; background: var(--card); flex-wrap: wrap; }
+.next-item > div { min-width: 0; display: grid; gap: 2px; }
+.share-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+/* Share cards look like a post on each network: logo header, author line, editable post. */
+.share-card { --net: #0a66c2; --net-fg: #fff; border: 1px solid var(--hairline); border-top: 4px solid var(--net); border-radius: var(--radius); padding: 14px 16px 16px; background: var(--card); display: grid; gap: 12px; min-width: 0; align-content: start; }
+.share-card.x { --net: #000; --net-fg: #fff; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .share-card.x { --net: #fff; --net-fg: #000; } }
+:root[data-theme="dark"] .share-card.x { --net: #fff; --net-fg: #000; }
+.sc-head { display: flex; align-items: center; gap: 10px; }
+.sc-logo { flex: none; width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; background: var(--net); color: var(--net-fg); }
+.share-card.li .sc-logo { background: none; color: var(--net); }
+.sc-logo svg { width: 20px; height: 20px; }
+.share-card.li .sc-logo svg { width: 32px; height: 32px; }
+.sc-title { display: grid; line-height: 1.25; min-width: 0; }
+.sc-title b { font-size: 16px; }
+.sc-title span { font-size: 12.5px; color: var(--muted); }
+.sc-head .count { margin-left: auto; }
+.count.over { color: var(--red); font-weight: 600; }
+.sc-post { border: 1px solid var(--hairline-2); border-radius: var(--radius-sm); background: var(--bg-2); padding: 12px 12px 4px; display: grid; gap: 8px; transition: border-color 0.15s, box-shadow 0.15s; }
+.sc-post:focus-within { border-color: var(--net); box-shadow: 0 0 0 3px color-mix(in srgb, var(--net) 18%, transparent); }
+.sc-author { display: flex; align-items: center; gap: 8px; line-height: 1.2; }
+.sc-author > span:last-child { display: grid; }
+.sc-author b { font-size: 13.5px; }
+.sc-author span span { font-size: 12px; color: var(--muted); }
+.sc-avatar { flex: none; width: 34px; height: 34px; border-radius: 50%; overflow: hidden; display: grid; place-items: end center; background: linear-gradient(160deg, color-mix(in srgb, var(--net) 22%, var(--card)), color-mix(in srgb, var(--net) 40%, var(--card))); }
+.sc-avatar svg { width: 100%; height: 100%; fill: color-mix(in srgb, var(--net) 55%, var(--card)); }
+.sc-post textarea { width: 100%; min-height: 120px; resize: none; overflow: hidden; font: 14.5px/1.55 var(--sans); color: var(--fg); background: none; border: 0; padding: 0 0 8px; outline: none; }
+.btn.sc-go { background: var(--net); border-color: var(--net); color: var(--net-fg); font-weight: 600; }
+.btn.sc-go:hover { background: var(--net); filter: brightness(1.1); }
+.btn.sc-go svg { width: 15px; height: 15px; }
+.share-repo { margin-top: 14px; font-size: 14px; color: var(--muted); }
+.share-repo a { color: var(--fg); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.share-image { display: grid; gap: 10px; }
+.share-image canvas { width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--hairline); }
+.count { font: 12px var(--mono); color: var(--muted); }
+
+footer.site { border-top: 1px solid var(--hairline); padding-block: 28px 48px; margin-top: 24px; }
+footer.site .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font: 12.5px var(--mono); color: var(--muted); }
+footer.site a { color: var(--fg); text-decoration-color: var(--hairline-2); text-underline-offset: 3px; }
+.watermark .grad { font-size: 1.15em; }
+
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--fg); color: var(--bg); padding: 8px 16px; border-radius: var(--radius-pill); font-size: 14px; z-index: 40; }
+
+/* ===== Feedback ===== */
+.feedback { border-top: 1px dashed var(--hairline); padding-top: 12px; display: grid; }
+.feedback.overall { border: 1px solid var(--hairline-2); background: var(--glass); border-radius: var(--radius); padding: 16px 18px; }
+.fb-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.fb-ask { font-size: 13.5px; color: var(--muted); }
+.feedback.overall .fb-ask { font-size: 15px; color: var(--fg); }
+.fb-votes { display: inline-flex; gap: 2px; }
+.fb-vote { width: 30px; height: 30px; border-radius: 50%; border: 0; background: none; color: var(--muted); opacity: 0.7; cursor: pointer; display: grid; place-items: center; transition: transform 0.15s ease, color 0.15s, background 0.15s, opacity 0.15s; }
+.fb-vote svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.fb-vote:hover { opacity: 1; color: var(--fg); background: var(--glass); }
+.fb-vote:active { transform: scale(0.9); }
+.fb-vote[aria-pressed="true"] { opacity: 1; color: var(--brand-text, var(--brand)); background: color-mix(in srgb, var(--brand) 10%, transparent); }
+.fb-vote[aria-pressed="true"] svg { fill: color-mix(in srgb, var(--brand) 20%, transparent); }
+.feedback.voted .fb-vote[aria-pressed="false"] { opacity: 0.35; }
+.fb-vote { position: relative; }
+.fb-vote.got svg { animation: fb-pop 0.45s cubic-bezier(.3, 1.6, .5, 1); }
+.fb-vote.got::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid var(--brand-text, var(--brand)); animation: fb-ring 0.6s ease-out forwards; pointer-events: none; }
+@keyframes fb-pop { 0% { transform: scale(1); } 40% { transform: scale(1.3) rotate(-8deg); } 100% { transform: scale(1); } }
+@keyframes fb-ring { from { transform: scale(0.8); opacity: 0.7; } to { transform: scale(1.7); opacity: 0; } }
+.fb-thanks:not([hidden]) { animation: fb-fade 0.3s ease; }
+@keyframes fb-fade { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+.fb-form { display: grid; grid-template-rows: 0fr; opacity: 0; transform: translateY(-4px); transition: grid-template-rows 0.25s ease, opacity 0.2s ease, transform 0.25s ease; }
+.fb-form.open { grid-template-rows: 1fr; opacity: 1; transform: none; }
+.fb-inner { min-height: 0; overflow: hidden; display: grid; gap: 8px; padding: 0 3px; margin: 0 -3px; transition: padding 0.25s ease; }
+.fb-form.open .fb-inner { padding: 10px 3px 3px; }
+.fb-thanks { margin-top: 10px; }
+.fb-field { display: grid; background: var(--card); border: 1px solid var(--hairline-2); border-radius: var(--radius-sm); transition: border-color 0.15s, box-shadow 0.15s; }
+.fb-field:focus-within { border-color: var(--brand-text, var(--brand)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent); }
+.fb-form textarea { display: block; width: 100%; resize: vertical; min-height: 64px; font: 15px/1.5 var(--sans); color: var(--fg); background: none; border: 0; outline: none; padding: 10px 12px 4px; }
+.fb-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; padding: 0 8px 8px 12px; }
+.fb-count { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.fb-count.low { color: color-mix(in srgb, var(--amber) 60%, var(--fg)); }
+.fb-send { margin-left: auto; padding: 5px 14px; font-size: 13.5px; opacity: 0; transform: translateY(4px); pointer-events: none; transition: opacity 0.18s ease, transform 0.18s ease; }
+.fb-form.has-text .fb-send { opacity: 1; transform: none; pointer-events: auto; }
+.fb-thanks { font-size: 14px; color: var(--muted); }
+.fb-edit { border: 0; background: none; padding: 0; color: var(--brand-text, var(--brand)); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .fb-vote, .fb-form, .fb-inner, .fb-send { transition: none; } .fb-vote.got svg, .fb-vote.got::after, .fb-thanks:not([hidden]) { animation: none; } .fb-vote[aria-pressed="true"], .fb-vote:active { transform: none; } }
+
+/* ===== Data sharing consent ===== */
+.consent {
+  position: fixed; left: 16px; right: auto; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 70;
+  width: calc(100vw - 32px); max-width: none; margin: 0; color: var(--fg);
+  background: var(--bg); border: 1px solid var(--hairline-2); border-radius: 16px; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+  padding: 18px 44px 18px 20px; font-size: 14.5px;
+  opacity: 0; transform: translateY(16px); transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.consent[open] { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: center; }
+.consent.open { opacity: 1; transform: none; }
+.consent-shade { position: fixed; inset: 0; z-index: 69; background: rgba(0, 0, 0, 0.22); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); opacity: 0; transition: opacity 0.2s ease; }
+.consent-shade.open { opacity: 1; }
+.consent-body { display: grid; gap: 8px; min-width: 0; }
+.consent-x { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border: 0; border-radius: 50%; background: none; color: var(--muted); cursor: pointer; display: grid; place-items: center; }
+.consent-x:hover { background: var(--glass-2); color: var(--fg); }
+.consent-x svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+@media (max-width: 680px) {
+  .consent { bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
+  .consent[open] { grid-template-columns: 1fr; gap: 12px; }
+}
+.consent h3 { font-size: 18px; }
+.consent p { color: var(--muted); }
+.consent-need { justify-self: start; font-size: 13px; font-weight: 600; color: color-mix(in srgb, var(--amber) 60%, var(--fg)) !important; background: var(--amber-bg); border-radius: var(--radius-pill); padding: 4px 10px; }
+.consent-more { justify-self: start; display: inline-flex; align-items: center; gap: 4px; border: 0; background: none; padding: 0; font: inherit; font-size: 13.5px; color: var(--fg); cursor: pointer; }
+.consent-more svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.25s ease; }
+.consent-more[aria-expanded="true"] svg { transform: rotate(90deg); }
+.consent-details { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.3s ease, opacity 0.25s ease; font-size: 13.5px; color: var(--muted); }
+.consent-details.open { grid-template-rows: 1fr; opacity: 1; }
+.consent-details > div { min-height: 0; overflow: hidden; }
+.consent-details ul { margin: 2px 0 8px; padding-left: 18px; display: grid; gap: 2px; }
+.consent-fine { font-size: 12.5px; }
+.consent-actions { display: grid; gap: 8px; min-width: 140px; }
+.consent-actions .btn { justify-self: stretch; justify-content: center; }
+@media (prefers-reduced-motion: reduce) { .consent, .consent-shade, .consent-details, .consent-more svg { transition: none; transform: none; } }
+
+/* ===== Library ===== */
+.lib-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hairline); }
+.lib-row { display: grid; gap: 4px; padding: 14px 8px; border-bottom: 1px solid var(--hairline); text-decoration: none; border-radius: var(--radius-sm); }
+.lib-row:hover { background: var(--glass); }
+.lib-row h3 { font-size: 17px; }
+.lib-meta { font-size: 13px; color: var(--muted); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.tag { font-size: 12.5px; line-height: 1; color: var(--muted); border: 1px solid var(--hairline-2); background: var(--glass); border-radius: var(--radius-pill); padding: 5px 10px; }
+.tag.area { color: var(--brand-text, var(--brand)); border-color: color-mix(in srgb, var(--brand-text, var(--brand)) 45%, transparent); background: color-mix(in srgb, var(--brand) 8%, transparent); }
+.search { width: 100%; max-width: 360px; font: 15px var(--sans); color: var(--fg); background: var(--glass); border: 1px solid var(--hairline-2); border-radius: var(--radius-pill); padding: 8px 14px; }
+.empty { border: 1px dashed var(--hairline-2); border-radius: var(--radius); padding: 24px; color: var(--muted); }
+
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; gap: 0; }
+  .sidebar {
+    position: sticky; top: var(--topbar-h, 52px); z-index: 10; max-height: none; overflow-x: auto; overflow-y: hidden;
+    padding-block: 8px; margin-inline: -20px; padding-inline: 20px;
+    background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--hairline); scrollbar-width: none;
+  }
+  .sidebar::-webkit-scrollbar { display: none; }
+  .side-title { display: none; }
+  .sidebar ol { grid-auto-flow: column; gap: 4px; }
+  .sidebar a { white-space: nowrap; padding: 5px 10px; font-size: 13px; }
+  .sidebar .tick { width: 18px; height: 18px; }
+}
+
+@media (max-width: 640px) {
+  .lens-blocks, .compare, .share-grid { grid-template-columns: 1fr; }
+  .flow { grid-auto-flow: row; }
+  .flow li:not(:last-child)::after { content: "↓"; right: auto; left: 14px; top: auto; bottom: -15px; transform: none; }
+  .hero { padding-block: 36px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+
+/* ===== Animated bars: amounts side by side ===== */
+.ab { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.ab li { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 16px; align-items: center; }
+.ab-text { display: grid; gap: 2px; min-width: 0; }
+.ab-text b { font-weight: 600; font-size: 15px; }
+.ab-text span { color: var(--muted); font-size: 13.5px; }
+.ab-track { height: 22px; border-radius: 6px; background: var(--glass-2); overflow: hidden; }
+.ab-fill { display: block; height: 100%; width: 0; border-radius: 6px; background: var(--brand); transition: width 900ms cubic-bezier(.2, .7, .2, 1); }
+.ab li.tone-good .ab-fill { background: var(--green); }
+.ab li.tone-bad .ab-fill { background: var(--red); }
+.ab li.on .ab-fill { width: var(--w); }
+.ab li:not(.on) .ab-text { opacity: 0.45; }
+.anim.still .ab-fill { transition: none; }
+@media (max-width: 560px) { .ab li { grid-template-columns: 1fr; gap: 6px; } }
+@media (prefers-reduced-motion: reduce) { .ab-fill { transition: none; } }
+
+/* ===== Bespoke animations (sandboxed frame) ===== */
+.bespoke-frame { border-radius: var(--radius-sm); overflow: hidden; background: var(--bg-2); }
+.bespoke-frame iframe { display: block; width: 100%; height: 100%; border: 0; background: transparent; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* ===== One-time hints (coach marks) ===== */
+.coach {
+  position: fixed; z-index: 60; max-width: min(300px, calc(100vw - 24px)); padding: 12px 14px 12px 14px;
+  background: var(--brand); color: var(--brand-fg); border-radius: 12px; font-size: 14px; line-height: 1.45;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); display: grid; gap: 8px;
+}
+.coach b { font-weight: 700; }
+.coach button { justify-self: end; border: 0; background: color-mix(in srgb, var(--brand-fg) 20%, transparent); color: var(--brand-fg); border-radius: 999px; padding: 4px 12px; font-size: 13px; cursor: pointer; }
+.coach::after { content: ""; position: absolute; left: var(--arrow-x, 24px); width: 12px; height: 12px; background: var(--brand); transform: rotate(45deg); }
+.coach.below::after { top: -6px; }
+.coach.above::after { bottom: -6px; }
+.coach.corner::after { display: none; }
+
+/* ===== Bigger first-time hint with a tiny demo ===== */
+.coach.big { max-width: min(340px, calc(100vw - 24px)); padding: 16px; font-size: 15px; }
+.coach-demo { display: grid; gap: 8px; justify-items: start; background: color-mix(in srgb, var(--brand-fg) 14%, transparent); border-radius: 10px; padding: 10px 12px; }
+.cd-line { font-size: 14px; }
+.cd-sel { border-radius: 4px; padding: 0 2px; background-size: 0% 100%; background-repeat: no-repeat; background-image: linear-gradient(color-mix(in srgb, var(--brand-fg) 45%, transparent), color-mix(in srgb, var(--brand-fg) 45%, transparent)); animation: cd-sweep 3.2s ease-in-out infinite; }
+.cd-pill { font-size: 12.5px; font-weight: 700; background: var(--brand-fg); color: var(--brand); border-radius: 999px; padding: 4px 10px; opacity: 0; transform: translateY(4px); animation: cd-pop 3.2s ease-in-out infinite; }
+@keyframes cd-sweep { 0%, 10% { background-size: 0% 100%; } 40%, 85% { background-size: 100% 100%; } 100% { background-size: 0% 100%; } }
+@keyframes cd-pop { 0%, 42% { opacity: 0; transform: translateY(4px); } 52%, 85% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+
+/* ===== Select text → ask ===== */
+.ask-pop {
+  position: absolute; z-index: 55; display: flex; gap: 4px; padding: 5px; border-radius: 999px;
+  background: var(--fg); box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3); animation: pop-in 0.18s ease-out;
+}
+.ask-pop::after { content: ""; position: absolute; left: 50%; bottom: -5px; width: 10px; height: 10px; background: var(--fg); transform: translateX(-50%) rotate(45deg); }
+.ask-pop.below::after { bottom: auto; top: -5px; }
+.ask-pop button { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; padding: 8px 14px; font: 600 14px var(--sans); cursor: pointer; background: transparent; color: var(--bg); }
+.ask-pop button[data-act="ask"] { background: var(--brand); color: var(--brand-fg); }
+.ask-pop svg { width: 16px; height: 16px; }
+@keyframes pop-in { from { opacity: 0; transform: translateY(4px) scale(0.97); } to { opacity: 1; transform: none; } }
+
+/* ===== Passages you asked about ===== */
+/* Asked passages look like an old-school highlighter stroke (same yellow in light and dark mode). */
+mark.asked {
+  color: #1c1a10; cursor: pointer; padding: 0.05em 0.3em; margin: 0 -0.15em; border-radius: 0.8em 0.3em; box-decoration-break: clone; -webkit-box-decoration-break: clone;
+  background: linear-gradient(100deg, #fff7a3, #ffee3a 5%, #fff25e 92%, #fff7a3);
+}
+mark.asked:hover { background: #ffe81a; }
+mark.asked.flash, .tutor-turn.flash { animation: flash 1.6s ease-out; }
+@keyframes flash { 0%, 40% { box-shadow: 0 0 0 4px rgba(255, 230, 0, 0.6); } 100% { box-shadow: 0 0 0 0 transparent; } }
+
+/* ===== Lesson tutor: full-height panel on the right ===== */
+/* Wide screens dock it beside the lesson and the page makes room; narrower ones slide it over the page. */
+:root { --tutor-w: clamp(380px, 34vw, 480px); }
+.tutor-fab {
+  position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 65; width: 58px; height: 58px; border-radius: 50%;
+  border: 0; background: var(--brand); color: var(--brand-fg); cursor: pointer; display: grid; place-items: center;
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--brand) 45%, rgba(0, 0, 0, 0.3)); transition: transform 0.15s;
+}
+.tutor-fab:hover { transform: scale(1.06); }
+.tutor-fab svg { width: 28px; height: 28px; }
+.tutor-fab.open { display: none; }
+.tutor-fab.pulse::before { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--brand-text, var(--brand)); animation: ring 1.8s ease-out infinite; }
+@keyframes ring { from { transform: scale(0.9); opacity: 0.9; } to { transform: scale(1.3); opacity: 0; } }
+.tutor-dot { position: absolute; top: 4px; right: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--red); border: 2px solid var(--bg); }
+.tutor {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 66; width: var(--tutor-w); display: flex; flex-direction: column; overflow: hidden;
+  background: var(--bg); border-left: 1px solid var(--hairline-2);
+  animation: tutor-in 0.24s cubic-bezier(.2, .7, .2, 1);
+}
+.tutor[hidden] { display: none; }
+@keyframes tutor-in { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (min-width: 1100px) {
+  html.tutor-open body { margin-right: var(--tutor-w); }
+  html.tutor-open .progress { right: var(--tutor-w); }
+}
+@media (max-width: 1099px) { .tutor { box-shadow: -24px 0 60px rgba(0, 0, 0, 0.22); } }
+/* Drag handle on the panel's left edge. */
+.tutor-resize { position: absolute; top: 0; bottom: 0; left: 0; z-index: 2; width: 8px; cursor: col-resize; touch-action: none; }
+.tutor-resize::after { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 2px; background: var(--brand-text, var(--brand)); opacity: 0; transition: opacity 0.15s; }
+.tutor-resize:hover::after, .tutor-resize:focus-visible::after, html.tutor-resizing .tutor-resize::after { opacity: 1; }
+.tutor-resize:focus-visible { outline: none; }
+html.tutor-resizing, html.tutor-resizing * { cursor: col-resize !important; user-select: none; -webkit-user-select: none; }
+html.tutor-resizing iframe { pointer-events: none; }
+.tutor-head { display: flex; align-items: center; gap: 10px; padding: 12px 12px 12px 20px; border-bottom: 1px solid var(--hairline); }
+.tutor-title { display: grid; flex: 1; min-width: 0; line-height: 1.3; }
+.tutor-title b { font-size: 15px; font-weight: 650; }
+.tutor-x { flex: none; border: 0; background: transparent; color: var(--muted); cursor: pointer; width: 34px; height: 34px; border-radius: var(--radius-sm); display: grid; place-items: center; }
+.tutor-x:hover { background: var(--glass-2); color: var(--fg); }
+.tutor-x svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tutor-body { flex: 1; overflow-y: auto; padding: 24px 20px 8px; display: grid; align-content: start; gap: 28px; scrollbar-gutter: stable; }
+.tutor-body > * { width: 100%; max-width: 640px; margin-inline: auto; }
+.tutor-hello { align-self: center; display: grid; gap: 14px; padding-top: 12vh; text-align: center; justify-items: center; }
+.tutor-hello h2 { font: 400 30px/1.15 var(--serif); letter-spacing: -0.01em; }
+.tutor-hello p { color: var(--muted); font-size: 15px; max-width: 34ch; }
+.tutor-tip { font-size: 13.5px; }
+.tutor-chips { display: grid; gap: 8px; width: 100%; margin-top: 8px; }
+.tutor-chip { border: 1px solid var(--hairline-2); background: var(--card); color: var(--fg); border-radius: var(--radius); padding: 10px 14px; font: 14px var(--sans); cursor: pointer; text-align: left; transition: background 0.15s, border-color 0.15s; }
+.tutor-chip:hover { background: var(--glass); border-color: var(--hairline-2); }
+.tutor-turn { display: grid; gap: 14px; border-radius: 12px; }
+.tutor-cite { justify-self: end; max-width: 85%; display: grid; gap: 2px; font-size: 12.5px; color: var(--muted); border-left: 3px solid #f2d600; padding: 2px 0 2px 8px; }
+.tutor-cite q { font-style: italic; }
+.tutor-jump { font-size: 12px; color: var(--brand-text, var(--brand)); text-decoration: none; justify-self: start; }
+.tutor-cite + .bubble.me { margin-top: -8px; }
+.bubble { font-size: 15.5px; line-height: 1.65; }
+/* The learner's message sits in a soft grey bubble; the tutor's reply reads as plain text across the panel. */
+.bubble.me { justify-self: end; max-width: 85%; padding: 10px 16px; border-radius: 18px; background: var(--card-2); color: var(--fg); white-space: pre-wrap; }
+.bubble.bot { justify-self: stretch; }
+.bubble.bot p + p, .bubble.bot p + ul, .bubble.bot ul + p { margin-top: 12px; }
+.bubble.bot ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.tutor-err { color: var(--red); }
+.typing { display: inline-flex; gap: 4px; padding: 6px 0; }
+.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: dot 1.2s infinite ease-in-out; }
+.typing i:nth-child(2) { animation-delay: 0.15s; }
+.typing i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes dot { 0%, 80%, 100% { opacity: 0.3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+/* Composer: one rounded box holding the quoted passage, the text and the send button. */
+.tutor-compose { width: calc(100% - 32px); max-width: 640px; margin: 8px auto 0; border: 1px solid var(--hairline-2); border-radius: 20px; background: var(--card); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); transition: border-color 0.15s, box-shadow 0.15s; }
+.tutor-compose:focus-within { border-color: color-mix(in srgb, var(--fg) 30%, transparent); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1); }
+.tutor-quote { display: flex; align-items: center; gap: 8px; margin: 8px 8px 0; padding: 8px 10px; border-radius: 12px; background: color-mix(in srgb, #fff200 22%, var(--card)); border: 1px solid color-mix(in srgb, #f2d600 55%, transparent); font-size: 13px; }
+.tutor-quote[hidden] { display: none; }
+.tq-label { font: 600 11px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); flex: none; }
+.tutor-quote q { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-style: italic; }
+.tutor-quote button { border: 0; background: transparent; color: var(--muted); font-size: 18px; cursor: pointer; }
+.tutor-form { display: flex; align-items: flex-end; gap: 8px; padding: 10px 10px 10px 16px; }
+.tutor-form textarea { flex: 1; resize: none; border: 0; outline: none; background: transparent; color: var(--fg); font: 15.5px/1.5 var(--sans); min-height: 48px; max-height: 200px; padding: 6px 0; }
+.tutor-send { flex: none; width: 34px; height: 34px; border-radius: 10px; border: 0; background: var(--brand); color: var(--brand-fg); cursor: pointer; display: grid; place-items: center; transition: opacity 0.15s; }
+.tutor-send svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.tutor-form:has(textarea:placeholder-shown) .tutor-send { opacity: 0.45; }
+.tutor-foot { margin: 8px 16px calc(12px + env(safe-area-inset-bottom, 0px)); font-size: 11.5px; color: var(--muted); text-align: center; }
+@media (max-width: 640px) {
+  .tutor { width: 100vw; border-left: 0; }
+  .tutor-resize { display: none; }
+  .tutor-body { padding-inline: 16px; }
+  .tutor-compose { width: calc(100% - 24px); }
+  .tutor-fab { right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tutor, .tutor-fab.pulse::before, .cd-sel, .cd-pill, .typing i { animation: none; }
+  .cd-sel { background-size: 100% 100%; }
+  .cd-pill { opacity: 1; transform: none; }
+}
+</style>
+<style>.course-kicker{margin:20px 0;font-size:14px;color:var(--muted)}.course-kicker a,.course-section a,.course-source a{color:var(--brand-text,var(--brand));text-decoration:underline;text-underline-offset:3px}.course-section{padding:26px 0}.course-section h3{margin:22px 0 8px}.course-section p{margin:10px 0}.course-section ol,.course-section ul{padding-left:24px}.course-section li{margin:9px 0}.course-table{overflow:auto;margin:20px 0}.course-table table{border-collapse:collapse;width:100%;font-size:14px;min-width:400px}.course-table th,.course-table td{text-align:left;padding:12px;vertical-align:top;border-bottom:1px solid var(--hairline)}.course-table th{background:var(--card-2)}.practice{padding:24px;border:1px solid var(--hairline);border-radius:18px;background:var(--card);margin:20px 0}.practice h3{margin-top:0}.practice label{display:block;margin:12px 0}.practice input[type=number],.practice select,.capstone textarea{width:100%;font:inherit;padding:10px;background:var(--bg);color:var(--fg);border:1px solid var(--hairline);border-radius:8px}.practice input[type=radio]{margin-right:10px}.practice fieldset{border:0;padding:10px 0;margin:12px 0}.practice legend{font-weight:650}.practice button,.course-nav a,.capstone button{display:inline-block;border:1px solid var(--hairline);background:var(--brand);color:var(--brand-fg);padding:11px 17px;border-radius:10px;font:inherit;text-decoration:none;cursor:pointer;margin-top:12px}.practice button:focus-visible{outline:3px solid var(--brand)}.practice .feedback-answer{margin-top:16px;padding:14px;background:var(--bg-2);border-radius:8px}.quote-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}.quote-output{display:grid;gap:8px;margin-top:18px;padding:18px;background:var(--bg-2);border-radius:10px;font-variant-numeric:tabular-nums}.quote-output output{font-weight:700}.course-nav{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;padding:24px 0}.course-source{font-size:14px;margin-top:18px}.capstone textarea{min-height:90px}.capstone label{display:block;margin:20px 0 8px;font-weight:650}@media(max-width:480px){.quote-fields{grid-template-columns:1fr}.practice{padding:16px}.course-table table{font-size:13px}}</style></head>
+<body>
+<div class="progress" aria-hidden="true"><span id="progress"></span></div>
+<div id="app"><noscript>This lesson needs JavaScript to display.</noscript></div>
+<script id="lesson-data" type="application/json">
+{
+  "version": 3,
+  "course_title": "Which teams have to do the work?",
+  "meta": {
+    "slug": "departments-and-controls",
+    "title": "One locked door, several people holding the **keys**",
+    "subject": "Which departments are involved and how does coverage vary by requirement?",
+    "domain": "security",
+    "one_liner": "Give each safeguard an owner and check how it supports different requirements.",
+    "minutes": 7,
+    "created": "2026-11-23",
+    "level": {
+      "depth": 1,
+      "lens": "balanced"
+    }
+  },
+  "hook": "When an employee leaves, who makes sure every company account is actually closed?",
+  "goal": "Map safeguards to teams and requirements, then assign one accountable owner for each working process.",
+  "concepts": [
+    {
+      "story": "Tara's people team records an employee's departure. IT closes the main login, but the support tool still works. Each team believes another team owns the final check. The same missed account matters to several customer security questions, even though those questions use different wording.",
+      "explain": "Think of one front-door lock helping household safety and meeting an insurance condition. **Shared controls** are safeguards that support several requirements. Removing access, reviewing suppliers and handling security incidents can provide records for more than one assessment. A mapping links a safeguard to requirements; it does not prove every requirement is met. Each may cover different systems, periods and details. ISO 27001 concerns a system for managing information security. SOC 2 examines selected service safeguards. PCI concerns relevant payment environments. Privacy laws add duties about personal data, information relating to people. Check which requirements apply before reusing work.",
+      "visual": {
+        "type": "flow",
+        "title": "Reuse useful work carefully",
+        "steps": [
+          {
+            "label": "Implement a safeguard",
+            "detail": "Remove access across relevant systems when people leave."
+          },
+          {
+            "label": "Keep clear records",
+            "detail": "Save dates, systems, approvals and unresolved exceptions."
+          },
+          {
+            "label": "Map to each requirement",
+            "detail": "Check scope, wording, timing and evidence expectations."
+          },
+          {
+            "label": "Close remaining gaps",
+            "detail": "Add what each applicable requirement still needs."
+          }
+        ],
+        "caption": "One safeguard can support several requirements without satisfying every part of them."
+      },
+      "real_world": "Scrut describes organising controls and evidence across compliance workflows, while ISO describes information security as a risk-based management system. These help explain why a common safeguard can be tracked once and linked to several needs. The links still need review: a payment environment, a software service and a set of personal-data activities may have different boundaries even inside one company.",
+      "id": "shared-controls",
+      "name": "Shared controls",
+      "source_refs": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "animation": {
+        "title": "One missed account affects several reviews",
+        "alt": "Inspect the departure task. Close the missed account and save the record. Use the same record in relevant reviews. Check what each review still needs. The screen ends with the recorded result.",
+        "caption": "Shared safeguards reduce repeated work; each requirement still needs its own coverage check.",
+        "height": 380,
+        "html": "\u003cdiv class=\"scene\">\u003cdiv class=\"narration\">\u003cb class=\"number\">1\u003c/b>\u003cspan class=\"caption\">Inspect the departure task\u003c/span>\u003c/div>\u003cdiv class=\"window\">\u003cdiv class=\"chrome\">Tara · departure record and evidence reuse\u003c/div>\u003cdiv class=\"content\">\u003ch3>Accounts · employee A\u003c/h3>\u003cdiv class=\"record \">\u003cspan>Main login\u003c/span>\u003cb>Disabled ✓\u003c/b>\u003c/div>\u003cdiv class=\"record bad\">\u003cspan>Support account\u003c/span>\u003cb>Still active\u003c/b>\u003c/div>\u003c/div>\u003cdiv class=\"progress\">\u003ci>\u003c/i>\u003c/div>\u003c/div>\u003c/div>",
+        "css": "*{box-sizing:border-box}.scene{height:100%;padding:14px;font-family:var(--sans);color:var(--fg);display:flex;flex-direction:column;gap:12px}.narration{min-height:42px;display:flex;align-items:center;gap:10px;font-size:clamp(13px,2.1vw,16px);font-weight:650}.number{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--brand);color:var(--brand-fg)}.window{width:100%;max-width:680px;margin:auto;flex:1;min-height:0;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--hairline-2);border-radius:16px;overflow:hidden}.chrome{padding:12px 15px;background:var(--bg-2);font-size:12px;color:var(--muted);border-bottom:1px solid var(--hairline)}.content{padding:16px;flex:1;display:flex;flex-direction:column;gap:10px}.content h3{margin:0 0 4px;font-size:clamp(15px,2.5vw,20px);font-weight:650}.record{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--hairline);font-size:clamp(11px,1.9vw,14px)}.record span{color:var(--muted);flex:1}.record b{font-weight:600;text-align:right;flex:1.3}.good b{color:var(--green)}.bad b{color:var(--red)}.note{margin:3px 0 0;color:var(--muted);font-size:clamp(11px,1.8vw,13px);line-height:1.5}.progress{height:3px;background:var(--hairline);margin-top:auto}.progress i{display:block;height:100%;background:var(--brand);transform-origin:left}.finish .chrome{color:var(--green)}@media(max-width:400px){.scene{padding:8px;gap:8px}.content{padding:12px;gap:7px}.record{padding:8px 0}.chrome{padding:10px;font-size:11px}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.progress i{transform:scaleX(1)!important}}",
+        "js": "(function(){const states=[{\"caption\":\"1. Inspect the departure task\",\"body\":\"\u003ch3>Accounts · employee A\u003c/h3>\u003cdiv class=\\\"record \\\">\u003cspan>Main login\u003c/span>\u003cb>Disabled ✓\u003c/b>\u003c/div>\u003cdiv class=\\\"record bad\\\">\u003cspan>Support account\u003c/span>\u003cb>Still active\u003c/b>\u003c/div>\"},{\"caption\":\"2. Close the missed account and save the record\",\"body\":\"\u003ch3>Support account settings\u003c/h3>\u003cdiv class=\\\"record good\\\">\u003cspan>Support account\u003c/span>\u003cb>Disabled ✓\u003c/b>\u003c/div>\u003cdiv class=\\\"record \\\">\u003cspan>Dated removal record\u003c/span>\u003cb>Attached to departure\u003c/b>\u003c/div>\"},{\"caption\":\"3. Use the same record in relevant reviews\",\"body\":\"\u003ch3>Evidence folder · departure A\u003c/h3>\u003cdiv class=\\\"record \\\">\u003cspan>ISO / SOC 2 review\u003c/span>\u003cb>Check scope and period\u003c/b>\u003c/div>\u003cdiv class=\\\"record \\\">\u003cspan>PCI review\u003c/span>\u003cb>Only if environment applies\u003c/b>\u003c/div>\"},{\"caption\":\"4. Check what each review still needs\",\"body\":\"\u003ch3>Requirement-specific review\u003c/h3>\u003cdiv class=\\\"record good\\\">\u003cspan>Reusable record\u003c/span>\u003cb>Linked ✓\u003c/b>\u003c/div>\u003cdiv class=\\\"record \\\">\u003cspan>Other requirements\u003c/span>\u003cb>Still need checking\u003c/b>\u003c/div>\u003cp class=\\\"note\\\">Outcome: reuse evidence without claiming complete compliance.\u003c/p>\"}];const root=document.querySelector('.scene'),n=document.querySelector('.number'),caption=document.querySelector('.caption'),content=document.querySelector('.content'),bar=document.querySelector('.progress i');const mq=matchMedia('(prefers-reduced-motion: reduce)');let shown=-1,start=0,raf=0;function show(k){if(k===shown)return;shown=k;n.textContent=k+1;caption.textContent=states[k].caption.slice(3);content.innerHTML=states[k].body;root.classList.toggle('finish',k===states.length-1);if(!mq.matches&&content.animate)content.animate([{opacity:.2,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],{duration:450,easing:'cubic-bezier(.2,.7,.2,1)'});}function frame(t){if(!start)start=t;const elapsed=(t-start)%12000;show(Math.floor(elapsed/3000));bar.style.transform='scaleX('+(elapsed/12000)+')';raf=requestAnimationFrame(frame);}function run(){cancelAnimationFrame(raf);shown=-1;start=0;if(mq.matches){show(states.length-1);bar.style.transform='scaleX(1)';}else{show(0);raf=requestAnimationFrame(frame);}}if(mq.addEventListener)mq.addEventListener('change',run);run();})();"
+      }
+    },
+    {
+      "story": "The missed support account becomes a lesson for Tara. HR must notify the departure date, IT and other system owners must remove access, and the manager must check coverage. A named owner must track completion and exceptions. Without that final responsibility, a task shared across teams can become nobody's task.",
+      "explain": "Think of a relay team: each handover needs someone ready to receive it. **Control ownership** names the person answerable for a safeguard working from start to finish. Contributors do tasks; the owner checks completion and records. An independent reviewer checks results where appropriate. Management approves resources and decisions about remaining risk. A provider may coordinate, but customer management keeps its responsibilities. Include suppliers and systems outside the main login. Record who raises a missed action and who may approve an exception, an agreed departure from the usual rule.",
+      "visual": {
+        "type": "sequence",
+        "title": "An employee leaves",
+        "actors": [
+          {
+            "id": "hr",
+            "name": "People team",
+            "role": "notifies the departure"
+          },
+          {
+            "id": "it",
+            "name": "System owners",
+            "role": "remove relevant access"
+          },
+          {
+            "id": "owner",
+            "name": "Process owner",
+            "role": "checks coverage and records"
+          }
+        ],
+        "steps": [
+          {
+            "to": "it",
+            "label": "Departure date and account details",
+            "from": "hr"
+          },
+          {
+            "at": "it",
+            "says": "Relevant accounts disabled; results recorded"
+          },
+          {
+            "to": "owner",
+            "label": "Removal records and any exceptions",
+            "from": "it"
+          },
+          {
+            "at": "owner",
+            "says": "Checks completion and escalates missed accounts"
+          }
+        ],
+        "caption": "The owner checks the full handover rather than assuming one disabled login is enough."
+      },
+      "real_world": "ISO 27001 describes establishing, maintaining and continually improving an information-security management system. A management system connects responsibilities and reviews with technical safeguards. PCI DSS similarly addresses people and processes as well as technology in the payment environment. These sources support assigning real owners instead of treating compliance as a document folder maintained by an outside consultant.",
+      "id": "control-ownership",
+      "name": "Control ownership",
+      "source_refs": [
+        1,
+        2
+      ],
+      "animation": {
+        "title": "The owner catches the missed support account",
+        "alt": "HR opens the departure ticket. IT records what it disabled. The process owner reopens the missing task. Confirm removal and retain the record. The screen ends with the recorded result.",
+        "caption": "Contributors do tasks; the owner checks completion across the full boundary.",
+        "height": 380,
+        "html": "\u003cdiv class=\"scene\">\u003cdiv class=\"narration\">\u003cb class=\"number\">1\u003c/b>\u003cspan class=\"caption\">HR opens the departure ticket\u003c/span>\u003c/div>\u003cdiv class=\"window\">\u003cdiv class=\"chrome\">Tara · departure ticket #42\u003c/div>\u003cdiv class=\"content\">\u003ch3>People team · employee A\u003c/h3>\u003cdiv class=\"record \">\u003cspan>Leaving date\u003c/span>\u003cb>23 Nov\u003c/b>\u003c/div>\u003cdiv class=\"record \">\u003cspan>Assigned to\u003c/span>\u003cb>IT and system owners\u003c/b>\u003c/div>\u003c/div>\u003cdiv class=\"progress\">\u003ci>\u003c/i>\u003c/div>\u003c/div>\u003c/div>",
+        "css": "*{box-sizing:border-box}.scene{height:100%;padding:14px;font-family:var(--sans);color:var(--fg);display:flex;flex-direction:column;gap:12px}.narration{min-height:42px;display:flex;align-items:center;gap:10px;font-size:clamp(13px,2.1vw,16px);font-weight:650}.number{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--brand);color:var(--brand-fg)}.window{width:100%;max-width:680px;margin:auto;flex:1;min-height:0;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--hairline-2);border-radius:16px;overflow:hidden}.chrome{padding:12px 15px;background:var(--bg-2);font-size:12px;color:var(--muted);border-bottom:1px solid var(--hairline)}.content{padding:16px;flex:1;display:flex;flex-direction:column;gap:10px}.content h3{margin:0 0 4px;font-size:clamp(15px,2.5vw,20px);font-weight:650}.record{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--hairline);font-size:clamp(11px,1.9vw,14px)}.record span{color:var(--muted);flex:1}.record b{font-weight:600;text-align:right;flex:1.3}.good b{color:var(--green)}.bad b{color:var(--red)}.note{margin:3px 0 0;color:var(--muted);font-size:clamp(11px,1.8vw,13px);line-height:1.5}.progress{height:3px;background:var(--hairline);margin-top:auto}.progress i{display:block;height:100%;background:var(--brand);transform-origin:left}.finish .chrome{color:var(--green)}@media(max-width:400px){.scene{padding:8px;gap:8px}.content{padding:12px;gap:7px}.record{padding:8px 0}.chrome{padding:10px;font-size:11px}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.progress i{transform:scaleX(1)!important}}",
+        "js": "(function(){const states=[{\"caption\":\"1. HR opens the departure ticket\",\"body\":\"\u003ch3>People team · employee A\u003c/h3>\u003cdiv class=\\\"record \\\">\u003cspan>Leaving date\u003c/span>\u003cb>23 Nov\u003c/b>\u003c/div>\u003cdiv class=\\\"record \\\">\u003cspan>Assigned to\u003c/span>\u003cb>IT and system owners\u003c/b>\u003c/div>\"},{\"caption\":\"2. IT records what it disabled\",\"body\":\"\u003ch3>System owner update\u003c/h3>\u003cdiv class=\\\"record \\\">\u003cspan>Main login\u003c/span>\u003cb>Disabled ✓\u003c/b>\u003c/div>\u003cdiv class=\\\"record bad\\\">\u003cspan>Support account\u003c/span>\u003cb>Not yet checked\u003c/b>\u003c/div>\"},{\"caption\":\"3. The process owner reopens the missing task\",\"body\":\"\u003ch3>Owner coverage review\u003c/h3>\u003cdiv class=\\\"record \\\">\u003cspan>Support owner\u003c/span>\u003cb>Removal requested\u003c/b>\u003c/div>\u003cdiv class=\\\"record \\\">\u003cspan>Ticket closure\u003c/span>\u003cb>Held until checked\u003c/b>\u003c/div>\"},{\"caption\":\"4. Confirm removal and retain the record\",\"body\":\"\u003ch3>Departure ticket #42 · closed\u003c/h3>\u003cdiv class=\\\"record good\\\">\u003cspan>Relevant accounts\u003c/span>\u003cb>Checked disabled ✓\u003c/b>\u003c/div>\u003cdiv class=\\\"record \\\">\u003cspan>Owner review\u003c/span>\u003cb>Recorded\u003c/b>\u003c/div>\u003cp class=\\\"note\\\">Outcome: one accountable owner checks the whole handover.\u003c/p>\"}];const root=document.querySelector('.scene'),n=document.querySelector('.number'),caption=document.querySelector('.caption'),content=document.querySelector('.content'),bar=document.querySelector('.progress i');const mq=matchMedia('(prefers-reduced-motion: reduce)');let shown=-1,start=0,raf=0;function show(k){if(k===shown)return;shown=k;n.textContent=k+1;caption.textContent=states[k].caption.slice(3);content.innerHTML=states[k].body;root.classList.toggle('finish',k===states.length-1);if(!mq.matches&&content.animate)content.animate([{opacity:.2,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],{duration:450,easing:'cubic-bezier(.2,.7,.2,1)'});}function frame(t){if(!start)start=t;const elapsed=(t-start)%12000;show(Math.floor(elapsed/3000));bar.style.transform='scaleX('+(elapsed/12000)+')';raf=requestAnimationFrame(frame);}function run(){cancelAnimationFrame(raf);shown=-1;start=0;if(mq.matches){show(states.length-1);bar.style.transform='scaleX(1)';}else{show(0);raf=requestAnimationFrame(frame);}}if(mq.addEventListener)mq.addEventListener('change',run);run();})();"
+      }
+    }
+  ],
+  "quiz": [
+    {
+      "question": "An access-removal record is mapped to ISO, SOC 2 and PCI. What does that mapping establish?",
+      "options": [
+        {
+          "text": "The three requirements are fully satisfied by that record",
+          "correct": false,
+          "why": "A mapping does not show that every requirement has been met."
+        },
+        {
+          "text": "The safeguard may support each, subject to scope checks",
+          "correct": true,
+          "why": "The record can be reused where applicable, but each requirement still needs review."
+        },
+        {
+          "text": "The systems covered by the three are the same",
+          "correct": false,
+          "why": "Framework boundaries can differ within the same business."
+        }
+      ],
+      "concept_id": "shared-controls"
+    },
+    {
+      "question": "HR sent the leaving date, and IT closed the main login. What best closes the process?",
+      "options": [
+        {
+          "text": "The adviser files the departure email as completion",
+          "correct": false,
+          "why": "The email proves notification, rather than full access removal."
+        },
+        {
+          "text": "The assessor accepts the main login as full coverage",
+          "correct": false,
+          "why": "The assessor does not replace the owner's operational check."
+        },
+        {
+          "text": "The owner checks relevant systems and unresolved exceptions",
+          "correct": true,
+          "why": "An end-to-end check catches connected tools and unfinished actions."
+        }
+      ],
+      "concept_id": "control-ownership"
+    },
+    {
+      "question": "A safeguard needs extra budget and a decision about remaining risk. Who is accountable?",
+      "options": [
+        {
+          "text": "Responsible company management",
+          "correct": true,
+          "why": "Management retains resource and risk decisions even when others support delivery."
+        },
+        {
+          "text": "The evidence collection software",
+          "correct": false,
+          "why": "Software can record a decision but cannot own management accountability."
+        },
+        {
+          "text": "The external assessment coordinator",
+          "correct": false,
+          "why": "Coordination does not transfer the company's decision-making responsibility."
+        }
+      ],
+      "concept_id": "control-ownership"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "mapping",
+      "tip": "A set of links showing which safeguard supports which requirement, like an index rather than a pass certificate."
+    },
+    {
+      "term": "personal data",
+      "tip": "Information about an identifiable person, like a customer record that can be linked back to someone."
+    },
+    {
+      "term": "exception",
+      "tip": "An agreed departure from the usual rule that needs a reason, owner and follow-up."
+    },
+    {
+      "term": "management system",
+      "tip": "An organised way to assign work, review results and keep improving, like the routines behind a well-run kitchen."
+    }
+  ],
+  "next": [
+    {
+      "title": "How sign-in checks who you are",
+      "prompt": "teach me Logins and authentication"
+    },
+    {
+      "title": "How activity records help you investigate",
+      "prompt": "teach me Monitoring and logs"
+    }
+  ],
+  "share": {
+    "linkedin": "When someone leaves, notification, access removal and a final coverage check need named owners. One closed login may leave other accounts active.\n\nBuilt using GrowthX teach",
+    "x": "One safeguard can support several requirements. Its scope and records still need checking against each one."
+  },
+  "sources": [
+    {
+      "title": "Scrut controls and evidence FAQ",
+      "url": "https://www.scrut.io/faqs/general"
+    },
+    {
+      "title": "ISO 27001 information security management",
+      "url": "https://www.iso.org/standard/27001"
+    },
+    {
+      "title": "PCI DSS standard and scope",
+      "url": "https://www.pcisecuritystandards.org/standards/pci-dss/"
+    },
+    {
+      "title": "AICPA SOC suite of services",
+      "url": "https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services"
+    },
+    {
+      "title": "European Commission data protection explained",
+      "url": "https://commission.europa.eu/law/law-topic/data-protection/data-protection-explained_en"
+    },
+    {
+      "title": "MeitY DPDP Rules commencement",
+      "url": "https://www.meity.gov.in/static/uploads/2025/11/53450e6e5dc0bfa85ebd78686cadad39.pdf"
+    }
+  ],
+  "worked_example": {
+    "title": "A starting department matrix",
+    "intro": "This is a planning map derived from the scope and subject of the listed official sources, not a universal mandatory team list. Select teams and safeguards using the actual organisation and applicable requirements.",
+    "steps": [
+      {
+        "title": "Run one departure through the teams",
+        "text": "HR supplies date and status; IT and system owners remove access across the relevant tools; the manager confirms coverage; the process owner retains dated records and tracks exceptions; an objective reviewer tests the process where required."
+      },
+      {
+        "title": "Keep management in the loop",
+        "text": "Leadership approves resources and risk decisions. Providers coordinate agreed tasks. Reusing controls helps, but different scope and evidence expectations still need checking."
+      }
+    ],
+    "table": {
+      "headers": [
+        "Requirement",
+        "Teams commonly needed",
+        "Work to trace"
+      ],
+      "rows": [
+        [
+          "ISO 27001",
+          "Leadership, IT, engineering, HR, procurement, legal, facilities within scope",
+          "Risk decisions, access, suppliers, people and relevant physical security"
+        ],
+        [
+          "SOC 2",
+          "Engineering, IT/security, operations, HR, supplier owners, leadership",
+          "Controls of the described service and selected examination criteria"
+        ],
+        [
+          "PCI DSS",
+          "Payments, engineering, IT/security, operations, procurement",
+          "Card environment, connected systems and service-provider responsibilities"
+        ],
+        [
+          "DPDP",
+          "Privacy/legal, product, marketing, HR, support, IT",
+          "Applicable personal-data activities and staged legal duties"
+        ],
+        [
+          "GDPR, where applicable",
+          "Privacy/legal, product, marketing, HR, support, IT",
+          "Personal-data purposes, rights, security and other applicable duties"
+        ]
+      ]
+    },
+    "takeaway": "A privacy law does not become a general compliance certificate. Name owners and trace real work for each applicable requirement."
+  }
+}
+</script>
+<script id="teach-catalogue" type="application/json">
+{
+  "version": 1,
+  "about": "Every tech and AI concept teach can teach, grouped by area. Lessons use these ids and names; next lists what to learn after a concept.",
+  "areas": [
+    {
+      "id": "ai-basics",
+      "name": "How AI works",
+      "concepts": [
+        { "id": "llm", "name": "Large language models", "plain": "Software that writes by predicting the next word, trained on huge amounts of text", "next": ["tokens", "training-vs-inference"] },
+        { "id": "tokens", "name": "Tokens", "plain": "The small chunks of text an AI reads and writes, and what you pay for", "next": ["context-window", "ai-cost-latency"] },
+        { "id": "context-window", "name": "Context window", "plain": "How much an AI can keep in mind at once", "next": ["rag", "prompting"] },
+        { "id": "prompting", "name": "Prompting", "plain": "Giving an AI clear instructions and examples so it does what you mean", "next": ["temperature", "evals"] },
+        { "id": "temperature", "name": "Temperature and randomness", "plain": "Why the same question can get different answers", "next": ["hallucination"] },
+        { "id": "hallucination", "name": "Hallucination", "plain": "When an AI states something false with full confidence", "next": ["rag", "evals"] },
+        { "id": "training-vs-inference", "name": "Training vs using a model", "plain": "Teaching a model once versus asking it questions every day", "next": ["fine-tuning", "ai-cost-latency"] },
+        { "id": "multimodal", "name": "Multimodal AI", "plain": "AI that works with images, audio and video as well as text", "next": ["llm"] }
+      ]
+    },
+    {
+      "id": "ai-building",
+      "name": "Building with AI",
+      "concepts": [
+        { "id": "embeddings", "name": "Embeddings", "plain": "Turning text into numbers so a computer can tell what means the same thing", "next": ["vector-search"] },
+        { "id": "vector-search", "name": "Vector search", "plain": "Finding things by meaning instead of exact words", "next": ["rag"] },
+        { "id": "rag", "name": "Retrieval-augmented generation (RAG)", "plain": "Letting an AI look things up in your documents before it answers", "next": ["evals", "context-window"] },
+        { "id": "agents", "name": "AI agents", "plain": "An AI that plans steps and takes actions on its own to reach a goal", "next": ["tool-use", "guardrails"] },
+        { "id": "tool-use", "name": "Tool use", "plain": "Letting an AI call other software, like search or a calculator", "next": ["mcp", "agents"] },
+        { "id": "mcp", "name": "Model Context Protocol (MCP)", "plain": "A standard plug that connects AI apps to tools and data", "next": ["agents", "api-keys-secrets"] },
+        { "id": "fine-tuning", "name": "Fine-tuning", "plain": "Extra training that teaches a model your style or task", "next": ["evals"] },
+        { "id": "evals", "name": "Evals", "plain": "Testing an AI's answers so you know it is getting better, not worse", "next": ["guardrails"] },
+        { "id": "guardrails", "name": "Guardrails", "plain": "Rules and checks that stop an AI from doing harmful or off-topic things", "next": ["prompt-injection"] },
+        { "id": "ai-cost-latency", "name": "AI cost and speed", "plain": "Why bigger models are slower and pricier, and how to choose", "next": ["caching"] }
+      ]
+    },
+    {
+      "id": "web-apps",
+      "name": "How apps and websites work",
+      "concepts": [
+        { "id": "frontend-backend", "name": "Frontend and backend", "plain": "The part you see versus the part that does the work behind it", "next": ["client-server", "apis"] },
+        { "id": "client-server", "name": "Clients and servers", "plain": "Your device asks, a computer elsewhere answers", "next": ["http"] },
+        { "id": "http", "name": "HTTP requests", "plain": "The way browsers and apps ask servers for things", "next": ["apis", "status-codes"] },
+        { "id": "status-codes", "name": "Status codes", "plain": "The short numbers like 200 and 404 that say how a request went", "next": ["monitoring-logs"] },
+        { "id": "apis", "name": "APIs", "plain": "A menu of things one piece of software lets another ask for", "next": ["json", "api-keys-secrets", "webhooks"] },
+        { "id": "json", "name": "JSON", "plain": "The plain-text format apps use to pass data to each other", "next": ["databases"] },
+        { "id": "databases", "name": "Databases", "plain": "Where an app keeps its information so it is still there tomorrow", "next": ["sql", "transactions"] },
+        { "id": "authentication", "name": "Logins and authentication", "plain": "How an app checks you are who you say you are", "next": ["sessions-cookies", "permissions"] },
+        { "id": "sessions-cookies", "name": "Sessions and cookies", "plain": "How a website remembers you between clicks", "next": ["privacy"] }
+      ]
+    },
+    {
+      "id": "infra",
+      "name": "Hosting and shipping",
+      "concepts": [
+        { "id": "hosting-cloud", "name": "Hosting and the cloud", "plain": "Renting computers somewhere else to run your app", "next": ["serverless", "domains-dns"] },
+        { "id": "serverless", "name": "Serverless", "plain": "Running code without managing a server yourself", "next": ["scaling"] },
+        { "id": "domains-dns", "name": "Domains and DNS", "plain": "How a name like growthx.club finds the right computer", "next": ["https-encryption"] },
+        { "id": "git", "name": "Git and version control", "plain": "Saving every version of your code so you can undo and work together", "next": ["deployment", "ci-cd"] },
+        { "id": "environments", "name": "Environments", "plain": "Separate copies of an app for building, testing and real users", "next": ["deployment"] },
+        { "id": "deployment", "name": "Deployment", "plain": "Putting a new version of your app live", "next": ["ci-cd", "rollbacks"] },
+        { "id": "ci-cd", "name": "CI/CD", "plain": "Robots that test and ship your code every time it changes", "next": ["rollbacks"] },
+        { "id": "rollbacks", "name": "Rollbacks", "plain": "Going back to the last working version when a release breaks", "next": ["monitoring-logs"] },
+        { "id": "scaling", "name": "Scaling", "plain": "Keeping an app fast when many more people use it", "next": ["caching", "queues"] }
+      ]
+    },
+    {
+      "id": "systems",
+      "name": "Reliability and speed",
+      "concepts": [
+        { "id": "caching", "name": "Caching", "plain": "Keeping a ready copy of an answer so you don't work it out twice", "next": ["scaling"] },
+        { "id": "queues", "name": "Queues and background jobs", "plain": "Doing slow work later, in line, so the app stays quick", "next": ["retries", "scheduling"] },
+        { "id": "webhooks", "name": "Webhooks", "plain": "One app tapping another on the shoulder when something happens", "next": ["retries", "idempotency"] },
+        { "id": "retries", "name": "Retries with backoff", "plain": "Trying again, waiting longer each time, when something fails", "next": ["idempotency"] },
+        { "id": "idempotency", "name": "Idempotency", "plain": "Making sure doing something twice has the same effect as once", "next": ["transactions"] },
+        { "id": "transactions", "name": "Transactions", "plain": "Several changes that all succeed together or all fail together", "next": ["databases"] },
+        { "id": "scheduling", "name": "Scheduling and cron", "plain": "Making software do something at a set time, by itself", "next": ["queues"] },
+        { "id": "rate-limiting", "name": "Rate limiting", "plain": "Capping how often someone can ask, so no one hogs the system", "next": ["retries"] },
+        { "id": "monitoring-logs", "name": "Monitoring and logs", "plain": "How teams notice something broke, and work out why", "next": ["rollbacks"] }
+      ]
+    },
+    {
+      "id": "security",
+      "name": "Staying safe",
+      "concepts": [
+        { "id": "https-encryption", "name": "Encryption and HTTPS", "plain": "Scrambling data so only the right person can read it", "next": ["password-hashing"] },
+        { "id": "password-hashing", "name": "Password hashing", "plain": "Why good apps can't tell you your own password", "next": ["two-factor"] },
+        { "id": "two-factor", "name": "Two-factor authentication", "plain": "Proving it's you with something you know and something you have", "next": ["phishing"] },
+        { "id": "api-keys-secrets", "name": "API keys and secrets", "plain": "The passwords software uses, and why they must never be shared", "next": ["permissions"] },
+        { "id": "permissions", "name": "Permissions", "plain": "Deciding who can see and change what", "next": ["privacy"] },
+        { "id": "prompt-injection", "name": "Prompt injection", "plain": "Tricking an AI with hidden instructions in what it reads", "next": ["guardrails"] },
+        { "id": "phishing", "name": "Phishing", "plain": "Fake messages that trick people into giving away access", "next": ["two-factor"] },
+        { "id": "privacy", "name": "Data privacy", "plain": "Collecting and keeping only the personal data you need, safely", "next": ["permissions"] }
+      ]
+    },
+    {
+      "id": "data",
+      "name": "Data and analytics",
+      "concepts": [
+        { "id": "sql", "name": "SQL", "plain": "The language for asking a database questions", "next": ["data-warehouse"] },
+        { "id": "event-tracking", "name": "Event tracking", "plain": "Recording what people do in an app so you can learn from it", "next": ["dashboards-metrics", "privacy"] },
+        { "id": "dashboards-metrics", "name": "Dashboards and metrics", "plain": "Turning raw numbers into a few that tell you what's happening", "next": ["ab-testing"] },
+        { "id": "data-pipelines", "name": "Data pipelines", "plain": "Moving and cleaning data from where it's made to where it's used", "next": ["data-warehouse"] },
+        { "id": "data-warehouse", "name": "Data warehouses", "plain": "One big store that pulls together data from every tool", "next": ["dashboards-metrics"] },
+        { "id": "ab-testing", "name": "A/B testing", "plain": "Showing two versions to different people to see which works better", "next": ["dashboards-metrics"] }
+      ]
+    },
+    {
+      "id": "automation",
+      "name": "Automation and no-code",
+      "concepts": [
+        { "id": "triggers-actions", "name": "Triggers and actions", "plain": "When this happens, do that: the heart of every automation", "next": ["integrations", "webhooks"] },
+        { "id": "integrations", "name": "Integrations", "plain": "Connecting two apps so data flows between them on its own", "next": ["apis", "api-keys-secrets"] },
+        { "id": "no-code-tools", "name": "No-code tools", "plain": "Building apps and automations by clicking instead of coding", "next": ["triggers-actions"] },
+        { "id": "workflow-automation", "name": "Workflow automation", "plain": "Chaining steps across tools so a whole process runs itself", "next": ["ai-automations", "scheduling"] },
+        { "id": "ai-automations", "name": "AI in automations", "plain": "Adding an AI step that reads, writes or decides inside a workflow", "next": ["agents", "guardrails"] }
+      ]
+    }
+  ]
+}
+</script>
+<script>window.LIBRARY = [];</script>
+
+<script>
+/* GrowthX teach lesson renderer. Inlined into every lesson by build.sh. */
+(function () {
+  "use strict";
+
+  var REPO_URL = "https://github.com/GrowthX-Club/teach";
+  var DEPTH_LABELS = { 1: "I'm new to this", 2: "I know the basics", 3: "I use it at work", 4: "I know it well" };
+
+  var lesson;
+  try {
+    lesson = JSON.parse(document.getElementById("lesson-data").textContent);
+  } catch (e) {
+    document.getElementById("app").textContent = "This lesson's data could not be read. Rebuild it with build.sh.";
+    return;
+  }
+
+  var areaNames = {};
+  try {
+    JSON.parse(document.getElementById("teach-catalogue").textContent).areas.forEach(function (a) { areaNames[a.id] = a.name; });
+  } catch (e) {}
+
+  var meta = lesson.meta || {};
+  var concepts = lesson.concepts || [];
+  var quiz = lesson.quiz || [];
+  var storeKey = "teach:" + (meta.slug || "lesson");
+  // Lessons live at <teach home>/lessons/<dir>/index.html, next to the library page.
+  var thisDir = (location.pathname.match(/\/lessons\/([a-z0-9-]+)\/(index\.html)?$/) || [])[1] || "";
+
+  function load(key, fallback) {
+    try {
+      var v = localStorage.getItem(storeKey + ":" + key);
+      return v === null ? fallback : v;
+    } catch (e) {
+      return fallback;
+    }
+  }
+  function save(key, value) {
+    try {
+      localStorage.setItem(storeKey + ":" + key, value);
+    } catch (e) {}
+  }
+
+  // ---------- tiny DOM helpers ----------
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+  // Plain text with **bold** and `code`. In titles, bold becomes the gradient accent.
+  function rich(s, accent) {
+    return esc(s)
+      .replace(/`([^`]+)`/g, "<code>$1</code>")
+      .replace(/\*\*([^*]+)\*\*/g, accent ? '<span class="grad">$1</span>' : "<strong>$1</strong>");
+  }
+  function plain(s) {
+    return String(s || "").replace(/\*\*([^*]+)\*\*/g, "$1").replace(/`([^`]+)`/g, "$1");
+  }
+  function paras(s) {
+    return String(s || "")
+      .split(/\n{2,}/)
+      .map(function (p) { return "<p>" + rich(p.trim()) + "</p>"; })
+      .join("");
+  }
+  function toast(msg) {
+    var t = document.createElement("div");
+    t.className = "toast";
+    t.setAttribute("role", "status");
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 1800);
+  }
+  function copy(text, fallbackEl) {
+    var done = function () { toast("Copied."); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { selectFallback(fallbackEl); });
+    } else selectFallback(fallbackEl);
+  }
+  function selectFallback(el) {
+    if (el && el.select) {
+      el.focus();
+      el.select();
+      toast("Selected. Press Cmd+C or Ctrl+C to copy.");
+    }
+  }
+
+  // ---------- sections ----------
+  // GrowthX wordmark: black in light mode, white in dark mode (see .brand-logo).
+  var GX_LOGO = '<svg class="brand-logo" role="img" aria-label="GrowthX" viewBox="0 0 98 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M31.5371 8.76074C33.1853 8.7608 34.5911 9.33456 35.7461 10.4795C36.9018 11.6252 37.4805 13.0382 37.4805 14.708C37.4804 16.3777 36.9017 17.7899 35.7461 18.9355C34.5911 20.0805 33.1853 20.6542 31.5371 20.6543C29.8889 20.6543 28.4831 20.0804 27.3281 18.9355L27.3271 18.9346C26.1864 17.7888 25.6153 16.377 25.6152 14.708C25.6152 13.0388 26.1863 11.6263 27.3271 10.4805L27.3281 10.4795C28.4831 9.33467 29.889 8.76074 31.5371 8.76074ZM31.5371 10.9219C30.4899 10.9219 29.6103 11.282 28.8906 12.0049C28.1717 12.727 27.8115 13.6251 27.8115 14.708C27.8116 15.7907 28.1718 16.6882 28.8906 17.4102C29.6103 18.133 30.4899 18.4941 31.5371 18.4941C32.5995 18.4941 33.4858 18.1326 34.2051 17.4102C34.9239 16.6882 35.2841 15.7907 35.2842 14.708C35.2842 13.6251 34.924 12.727 34.2051 12.0049C33.4858 11.2825 32.5995 10.9219 31.5371 10.9219Z" fill="currentColor" stroke="currentColor" stroke-width="0.284384"/><path fill-rule="evenodd" clip-rule="evenodd" d="M23.9704 9.06344V11.1005H22.9736C21.9854 11.1005 21.1922 11.4014 20.6459 11.9583C20.0996 12.5152 19.7941 13.3346 19.7941 14.3841L19.7941 20.5483H17.5762L17.5762 9.16603H19.6552L19.7766 10.6694C20.2796 9.60865 21.3582 8.91797 22.794 8.91797C23.1808 8.91797 23.4991 8.9638 23.9277 9.05443L23.9704 9.06344Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M86.664 11.2135L93.1334 1.07073L98.0003 0L90.3071 12.0068L98.0003 24L93.4539 23.0525L93.1334 22.9915L86.6572 12.7905L82.2623 19.7482L77.8755 20.6673L83.4442 12.0068L77.8633 3.32183L82.2488 4.2423L86.664 11.2135Z" fill="#3096FF"/><path d="M67.6018 3.50586V9.7832C68.5062 8.75158 69.6226 8.23577 70.9509 8.23577C71.714 8.23577 72.4135 8.41023 73.0494 8.75916C73.6853 9.10809 74.187 9.60873 74.5544 10.2611C74.9359 10.9134 75.1267 11.6872 75.1267 12.5822V20.6294H72.9646V13.1284C72.9646 12.2333 72.7244 11.5506 72.2439 11.0803C71.7776 10.61 71.1911 10.3749 70.4846 10.3749C69.9476 10.3749 69.4177 10.519 68.8948 10.8072C68.372 11.0803 67.941 11.4672 67.6018 11.9678V20.6294H65.4609V3.50586H67.6018Z" fill="currentColor"/><path d="M49.4858 20.4948L54.2356 9.16895H51.9477L49.3366 15.7993L46.5513 9.16895H44.537L45.3576 11.0007L43.4428 15.6445L40.6824 9.16895H38.3945L43.1692 20.4948L46.1783 13.1678L49.4858 20.4948Z" fill="currentColor"/><path d="M11.7693 19.9889C12.8659 19.6517 13.6691 19.2839 14.1788 18.8854V11.094H8.57215V13.232H11.9083V17.598C11.5377 17.8126 11.0743 17.9812 10.5183 18.1038C9.96223 18.2111 9.39074 18.2647 8.80383 18.2647C7.53731 18.2647 6.40982 18.0118 5.42131 17.5061C4.4328 16.985 3.66825 16.257 3.12768 15.3221C2.5871 14.3872 2.3168 13.3221 2.3168 12.1267C2.3168 10.8393 2.5871 9.71285 3.12768 8.74732C3.66825 7.78179 4.4328 7.03849 5.42131 6.5174C6.42524 5.99631 7.57593 5.73578 8.87334 5.73578C9.47571 5.73578 10.1476 5.84307 10.889 6.05762C11.4481 6.20483 11.9356 6.37293 12.3514 6.56195L13.5069 4.72427C12.8428 4.35645 12.0937 4.06524 11.2596 3.85069C10.4256 3.6208 9.5375 3.50586 8.59532 3.50586C7.03536 3.50586 5.59894 3.85834 4.28608 4.56335C2.97321 5.26835 1.93066 6.28751 1.1584 7.62086C0.386134 8.93888 0 10.5021 0 12.3106C0 13.8585 0.355241 15.2532 1.06573 16.4946C1.79166 17.736 2.81878 18.7168 4.14707 19.4371C5.47536 20.1421 7.01219 20.4946 8.7575 20.4946C9.68422 20.4946 10.6882 20.3261 11.7693 19.9889Z" fill="currentColor"/><path d="M58.1964 5.54883H60.5185V9.35403H63.3649V11.1847H60.5185V20.4948H58.1964V11.1847H56.2988V9.35403H58.1964V5.54883Z" fill="currentColor"/></svg>';
+  function topbar() {
+    return (
+      '<header class="topbar"><div class="wrap topbar-lesson">' +
+      '<a class="brand" href="' + REPO_URL + '" target="_blank" rel="noopener">' + GX_LOGO + ' <span class="grad">teach</span></a>' +
+      '<div class="controls">' +
+      (thisDir ? '<a class="btn" href="../../index.html">All lessons</a>' : "") +
+      '<button type="button" class="icon-btn" id="theme-toggle" aria-label="Switch light or dark theme">◐</button>' +
+      "</div></div></header>"
+    );
+  }
+
+  function hero() {
+    var level = meta.level || {};
+    var eyebrow = [areaNames[meta.domain] || meta.domain, DEPTH_LABELS[level.depth], meta.minutes ? meta.minutes + " min" : ""]
+      .filter(Boolean).map(esc).join(" · ");
+    return (
+      '<section class="hero" id="start" data-nav="Start">' +
+      '<p class="eyebrow">' + eyebrow + "</p>" +
+      "<h1>" + rich(meta.title, true) + "</h1>" +
+      (lesson.hook ? '<p class="lede">' + rich(lesson.hook) + "</p>" : "") +
+      (lesson.goal ? '<div class="goal"><span class="eyebrow">By the end</span><p>' + rich(lesson.goal) + "</p></div>" : "") +
+      "</section>"
+    );
+  }
+
+  // Every concept gets an animated figure: it plays one beat at a time when it
+  // scrolls into view and loops. Anything that appears carries data-beat="k" and
+  // is switched on once the player reaches beat k (see the animated figures
+  // section). The same content stays in the page as plain text for screen
+  // readers, and is the whole figure when motion is turned off.
+  var visuals = [];
+  function actorIndex(v, id) {
+    var list = v.actors || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return i;
+    return 0;
+  }
+  function stepText(v, s) {
+    var actors = v.actors || [];
+    if (s.at !== undefined) return plain((actors[actorIndex(v, s.at)] || {}).name) + ": " + plain(s.says);
+    return plain((actors[actorIndex(v, s.from)] || {}).name) + " to " + plain((actors[actorIndex(v, s.to)] || {}).name) + ": " + plain(s.label);
+  }
+  function flowStage(v) {
+    var steps = v.steps || [];
+    return {
+      beats: steps.length,
+      alt: steps.map(function (s) { return plain(s.label) + ": " + plain(s.detail); }),
+      html: '<ol class="af" style="--n:' + steps.length + '">' + steps.map(function (s, i) {
+        return '<li data-beat="' + (i + 1) + '"><span class="af-n">' + (i + 1) + "</span><b>" + rich(s.label) + "</b><span>" + rich(s.detail) + "</span></li>";
+      }).join("") + "</ol>"
+    };
+  }
+  function compareStage(v) {
+    var beat = 0, alt = [];
+    var sides = ["left", "right"].map(function (k) {
+      var x = v[k] || {}, pts = x.points || [], first = beat + 1;
+      var tone = x.tone === "good" || x.tone === "bad" ? x.tone : "neutral";
+      var items = pts.map(function (p) { beat++; return '<li data-beat="' + beat + '">' + rich(p) + "</li>"; }).join("");
+      alt.push(plain(x.title) + ": " + pts.map(plain).join("; "));
+      var mark = tone === "neutral" ? "" : '<i class="ac-mark" data-beat="' + beat + '">' + (tone === "good" ? "✓" : "✗") + "</i>";
+      return '<div class="ac-side tone-' + tone + '" data-beat="' + first + '"><div class="ac-title"><b>' + rich(x.title) + "</b>" + mark + "</div><ul>" + items + "</ul></div>";
+    });
+    return { beats: beat, alt: alt, html: '<div class="ac">' + sides[0] + '<span class="ac-vs">vs</span>' + sides[1] + "</div>" };
+  }
+  function sequenceStage(v) {
+    var actors = v.actors || [], steps = v.steps || [];
+    return {
+      beats: steps.length,
+      alt: steps.map(function (s) { return stepText(v, s); }),
+      html: '<div class="as" style="--n:' + actors.length + '">' +
+        '<div class="as-actors">' + actors.map(function (a) {
+          return '<div class="as-actor"><b>' + rich(a.name) + "</b>" + (a.role ? '<span class="as-role">' + rich(a.role) + "</span>" : "") + '<span class="as-state"></span></div>';
+        }).join("") + "</div>" +
+        '<div class="as-lane"><span class="as-msg"></span></div>' +
+        '<ol class="as-log">' + steps.map(function (s, i) {
+          var who = s.at !== undefined
+            ? plain((actors[actorIndex(v, s.at)] || {}).name)
+            : plain((actors[actorIndex(v, s.from)] || {}).name) + " → " + plain((actors[actorIndex(v, s.to)] || {}).name);
+          return '<li data-beat="' + (i + 1) + '"><span class="as-who">' + esc(who) + "</span><span>" + rich(s.at !== undefined ? s.says : s.label) + "</span></li>";
+        }).join("") + "</ol></div>"
+    };
+  }
+  // Amounts side by side (time, cost, size): each bar grows to its value on its beat.
+  // Tiny values keep a visible sliver so they don't vanish next to big ones.
+  function barsStage(v) {
+    var bars = v.bars || [];
+    var max = Math.max.apply(null, bars.map(function (b) { return Number(b.value) || 0; }).concat([0])) || 1;
+    return {
+      beats: bars.length,
+      alt: bars.map(function (b) { return plain(b.label) + ": " + plain(b.display); }),
+      html: '<ol class="ab">' + bars.map(function (b, i) {
+        var pct = Math.max(1.5, (Number(b.value) || 0) / max * 100);
+        var tone = b.tone === "good" || b.tone === "bad" ? b.tone : "neutral";
+        return '<li data-beat="' + (i + 1) + '" class="tone-' + tone + '" style="--w:' + pct.toFixed(2) + '%">' +
+          '<div class="ab-text"><b>' + rich(b.label) + '</b><span>' + rich(b.display) + "</span></div>" +
+          '<div class="ab-track"><span class="ab-fill"></span></div></li>';
+      }).join("") + "</ol>"
+    };
+  }
+
+  function visual(v) {
+    if (!v) return "";
+    var stage = v.type === "sequence" ? sequenceStage(v) : v.type === "compare" ? compareStage(v) : v.type === "bars" ? barsStage(v) : flowStage(v);
+    var idx = visuals.push({ v: v, beats: stage.beats }) - 1;
+    return (
+      '<figure class="anim" data-anim="' + idx + '" data-type="' + esc(v.type) + '">' +
+      '<div class="anim-head"><strong>' + rich(v.title) + "</strong>" +
+      '<button class="anim-btn" type="button" hidden>Pause</button></div>' +
+      '<div class="anim-stage" aria-hidden="true">' + stage.html + "</div>" +
+      '<ol class="anim-alt">' + stage.alt.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ol>" +
+      (v.caption ? "<figcaption>" + rich(v.caption) + "</figcaption>" : "") +
+      "</figure>"
+    );
+  }
+
+  // A bespoke animation, designed for this one concept by the animator agent.
+  // It runs inside a sandboxed frame: scripts only, no network (CSP), no access
+  // to this page, its storage or cookies. The frame gets the lesson's colours.
+  var bespokes = [];
+  function bespoke(a) {
+    var idx = bespokes.push(a) - 1;
+    var h = Math.min(440, Math.max(180, Number(a.height) || 300));
+    return (
+      '<figure class="anim bespoke">' +
+      '<div class="anim-head"><strong>' + rich(a.title) + "</strong></div>" +
+      '<div class="bespoke-frame" style="height:' + h + 'px"><iframe data-bespoke="' + idx + '" sandbox="allow-scripts" title="' + esc(plain(a.title)) + '" aria-describedby="bespoke-alt-' + idx + '"></iframe></div>' +
+      '<p class="sr-only" id="bespoke-alt-' + idx + '">' + esc(a.alt) + "</p>" +
+      (a.caption ? "<figcaption>" + rich(a.caption) + "</figcaption>" : "") +
+      "</figure>"
+    );
+  }
+
+  // What the session was about, for learners who have forgotten the chat by the time they open the lesson.
+  function sessionSection() {
+    var s = lesson.session;
+    if (!s || !s.about) return "";
+    return (
+      '<section class="block session" id="session" data-nav="Your session">' +
+      '<div class="sec-head"><span class="sec-num">Recap</span><h2>What you were working on</h2></div>' +
+      '<p class="session-about">' + rich(s.about) + "</p>" +
+      (s.did ? '<div class="prose">' + paras(s.did) + "</div>" : "") +
+      '<div class="session-learn"><span class="eyebrow">What you\'ll learn today</span><ul>' +
+      concepts.map(function (c) { return '<li><a href="#c-' + esc(c.id) + '">' + esc(plain(c.name)) + "</a></li>"; }).join("") +
+      "</ul></div></section>"
+    );
+  }
+
+  function concept(c) {
+    return (
+      '<section class="block" id="c-' + esc(c.id) + '" data-nav="' + esc(plain(c.name)) + '">' +
+      (c.story ? '<div class="story prose">' + paras(c.story) + "</div>" : "") +
+      '<div class="sec-head"><h2>' + rich(c.name) + "</h2></div>" +
+      '<div class="analogy"><span class="eyebrow">Analogy</span><div class="prose">' + paras(c.explain) + "</div></div>" +
+      (c.animation ? bespoke(c.animation) : visual(c.visual)) +
+      (c.real_world ? '<div class="sub"><h3>In the real world</h3><div class="prose">' + paras(c.real_world) + "</div></div>" : "") +
+      (c.in_your_work && c.in_your_work.text ? '<div class="sub"><h3>In your work</h3><div class="prose">' + paras(c.in_your_work.text) + "</div></div>" : "") +
+      (c.fun_fact
+        ? '<aside class="fact" aria-label="Did you know?">' +
+          '<svg class="fact-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+          '<div><span class="fact-label">Did you know?</span><div class="prose">' + paras(c.fun_fact) + "</div></div></aside>"
+        : "") +
+      "</section>"
+    );
+  }
+
+  function quizSection() {
+    if (!quiz.length) return "";
+    var qs = quiz.map(function (q, qi) {
+      var opts = (q.options || []).map(function (o, oi) {
+        return '<button type="button" class="option" data-q="' + qi + '" data-o="' + oi + '"><span>' + rich(o.text) + '</span><span class="why" hidden>' + rich(o.why) + "</span></button>";
+      }).join("");
+      return '<div class="question" id="q-' + qi + '"><span class="eyebrow">Question ' + (qi + 1) + " of " + quiz.length + "</span><h3>" + rich(q.question) + '</h3><div class="options">' + opts + "</div></div>";
+    }).join("");
+    return (
+      '<section class="block" id="quiz" data-nav="Quiz">' +
+      '<div class="sec-head"><span class="sec-num">Quiz</span><h2>Check yourself</h2></div>' +
+      '<p class="score" id="score" aria-live="polite">0 of ' + quiz.length + " answered</p>" +
+      qs +
+      '<div class="quiz-done" id="quiz-done" hidden></div>' +
+      "</section>"
+    );
+  }
+
+  function nextSection() {
+    var next = lesson.next || [];
+    if (!next.length) return "";
+    return (
+      '<section class="block" id="next" data-nav="Keep going">' +
+      '<div class="sec-head"><span class="sec-num">Next</span><h2>Keep going</h2></div>' +
+      '<div class="next-list">' + next.map(function (n, i) {
+        return '<div class="next-item"><div><b>' + rich(n.title) + "</b><code>" + esc(n.prompt) + '</code></div><button type="button" class="btn" data-copy-next="' + i + '">Copy prompt</button></div>';
+      }).join("") + "</div></section>"
+    );
+  }
+
+  function videosSection() {
+    var videos = (lesson.videos || []).filter(function (v) { return v && v.url && v.title; });
+    if (!videos.length) return "";
+    var names = {};
+    concepts.forEach(function (c) { names[c.id] = plain(c.name); });
+    return (
+      '<section class="block" id="watch" data-nav="Watch">' +
+      '<div class="sec-head"><span class="sec-num">Annex</span><h2>Prefer watching?</h2></div>' +
+      '<ol class="videos">' + videos.map(function (v) {
+        var safe = /^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(v.url) ? v.url : "#";
+        return (
+          "<li>" +
+          '<a class="video-link" href="' + esc(safe) + '" target="_blank" rel="noopener">' +
+          '<span class="video-start">▶ ' + esc(v.start) + "</span>" +
+          '<span class="video-title">' + esc(v.title) + "</span></a>" +
+          '<span class="video-meta">' + esc([v.channel, names[v.concept_id]].filter(Boolean).join(" · ")) + "</span>" +
+          (v.why ? '<p class="video-why">' + rich(v.why) + "</p>" : "") +
+          "</li>"
+        );
+      }).join("") + "</ol></section>"
+    );
+  }
+
+  // Social logos (Simple Icons, CC0). Both use currentColor.
+  var LOGO_LI = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>';
+  var LOGO_X = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>';
+  // Every post ends with a link to teach, so readers can make their own lessons.
+  function withRepoLink(text) {
+    text = String(text || "").replace(/\s+$/, "");
+    return text.indexOf(REPO_URL.replace(/^https:\/\//, "")) >= 0 ? text : text + "\n\n" + REPO_URL;
+  }
+  function shareCard(id, cls, logo, name, sub, text, open) {
+    return (
+      '<article class="share-card ' + cls + '">' +
+      '<header class="sc-head"><span class="sc-logo">' + logo + '</span><span class="sc-title"><b>' + name + "</b><span>" + sub + "</span></span>" +
+      '<span class="count" id="' + id + '-count"></span></header>' +
+      '<div class="sc-post"><div class="sc-author"><span class="sc-avatar" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="12.5" r="5.5"/><path d="M5.5 28.5c1.6-5.6 5.6-8.5 10.5-8.5s8.9 2.9 10.5 8.5"/></svg></span><span><b>You</b><span>Now · your post</span></span></div>' +
+      '<textarea id="' + id + '" aria-label="' + name + ' post" spellcheck="true">' + esc(withRepoLink(text)) + "</textarea></div>" +
+      '<div class="btn-row"><a class="btn sc-go" id="' + id + '-open" target="_blank" rel="noopener">' + logo + open + '</a><button type="button" class="btn" data-copy="' + id + '">Copy text</button></div>' +
+      "</article>"
+    );
+  }
+
+  function shareSection() {
+    var s = lesson.share || {};
+    if (!s.linkedin && !s.x) return "";
+    return (
+      '<section class="block" id="share" data-nav="Share">' +
+      '<div class="sec-head"><span class="sec-num">Share</span><h2>Tell people what you learned</h2></div>' +
+      '<div class="share-grid">' +
+      (s.linkedin ? shareCard("share-li", "li", LOGO_LI, "LinkedIn", "Post to your network", s.linkedin, "Post on LinkedIn") : "") +
+      (s.x ? shareCard("share-x", "x", LOGO_X, "X", "Post to your followers", s.x, "Post on X") : "") +
+      "</div>" +
+      '<p class="share-repo">Make lessons like this from your own chats: <a href="' + REPO_URL + '" target="_blank" rel="noopener">github.com/GrowthX-Club/teach</a></p>' +
+      "</section>"
+    );
+  }
+
+  function moreSection() {
+    if (!thisDir) return "";
+    var others = (window.LIBRARY || []).filter(function (it) { return it && it.dir && it.dir !== thisDir && it.lesson; })
+      .sort(function (a, b) { return a.dir < b.dir ? 1 : -1; });
+    if (!others.length) return "";
+    return (
+      '<section class="block" id="more" data-nav="More lessons">' +
+      '<div class="sec-head"><span class="sec-num">More</span><h2>Your other lessons</h2></div>' +
+      '<ol class="lib-list">' + others.slice(0, 6).map(function (it) {
+        var m = it.lesson.meta || {};
+        var tags = (areaNames[m.domain] ? '<span class="tag area">' + esc(areaNames[m.domain]) + "</span>" : "") +
+          (it.lesson.concepts || []).map(function (c) { return '<span class="tag">' + esc(plain(c.name)) + "</span>"; }).join("");
+        return '<li><a class="lib-row" href="../' + encodeURIComponent(it.dir) + '/index.html">' +
+          (m.created ? '<span class="lib-meta">' + esc(m.created) + "</span>" : "") +
+          "<h3>" + esc(plain(m.title)) + "</h3>" +
+          (tags ? '<span class="tags">' + tags + "</span>" : "") + "</a></li>";
+      }).join("") + "</ol>" +
+      (others.length > 6 ? '<a class="btn" href="../../index.html" style="margin-top:12px">See all ' + (others.length + 1) + " lessons</a>" : "") +
+      "</section>"
+    );
+  }
+
+  // Overall feedback, right after the quiz. Per-section boxes are added after render (see feedback below).
+  function feedbackSection() {
+    return (
+      '<section class="block" id="feedback" data-nav="Feedback">' +
+      '<div class="sec-head"><span class="sec-num">Feedback</span><h2>How was this lesson?</h2></div>' +
+      '<div class="feedback overall" data-feedback="lesson"></div>' +
+      "</section>"
+    );
+  }
+
+  function footer() {
+    var created = meta.created ? "Made " + esc(meta.created) + " · " : "";
+    return (
+      '<footer class="site"><div class="wrap">' +
+      '<a class="watermark" href="' + REPO_URL + '" target="_blank" rel="noopener">Built using GrowthX <span class="grad">teach</span></a>' +
+      "<span>" + created + "Shared learning course · Sources checked 23 November 2026</span>" +
+      "</div></footer>"
+    );
+  }
+
+  // External links always open in a new tab, even in browsers that ignore target="_blank".
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    var url;
+    try { url = new URL(a.getAttribute("href"), location.href); } catch (err) { return; }
+    if (!/^https?:$/.test(url.protocol) || url.origin === location.origin) return;
+    var win = window.open(url.href, "_blank");
+    if (win) {
+      win.opener = null;
+      e.preventDefault();
+    }
+  });
+
+  // ---------- render ----------
+  document.title = plain(meta.title || "Lesson") + " · GrowthX teach";
+  var body = hero() + sessionSection() + concepts.map(concept).join("") + quizSection() + videosSection();
+  document.getElementById("app").innerHTML =
+    topbar() +
+    '<div class="layout wrap"><nav class="sidebar" id="sidebar" aria-label="Lesson sections"></nav><main class="content">' + body + "</main></div>" +
+    footer();
+
+  // ---------- sidebar ----------
+  var sections = Array.prototype.slice.call(document.querySelectorAll("[data-nav]"));
+  var conceptCount = 0;
+  document.getElementById("sidebar").innerHTML =
+    '<span class="eyebrow side-title">In this lesson</span><ol>' +
+    sections.map(function (sec) {
+      var isConcept = sec.id.indexOf("c-") === 0;
+      var mark = isConcept ? String(++conceptCount) : "";
+      return '<li><a href="#' + sec.id + '" data-target="' + sec.id + '"><span class="tick" aria-hidden="true">' + mark + "</span><span>" + esc(sec.getAttribute("data-nav")) + "</span></a></li>";
+    }).join("") +
+    "</ol>";
+  var links = {};
+  document.querySelectorAll("#sidebar a").forEach(function (a) { links[a.getAttribute("data-target")] = a; });
+  // Keep the sidebar just below the top bar, whose height changes when it wraps on phones.
+  function measureTopbar() {
+    var top = document.querySelector(".topbar");
+    if (top) document.documentElement.style.setProperty("--topbar-h", top.offsetHeight + "px");
+  }
+  measureTopbar();
+  addEventListener("resize", measureTopbar);
+
+  function updateSidebar() {
+    var line = innerHeight * 0.35;
+    var current = sections[0];
+    sections.forEach(function (sec) {
+      if (sec.getBoundingClientRect().top <= line) current = sec;
+    });
+    var passed = true;
+    sections.forEach(function (sec) {
+      var a = links[sec.id];
+      if (sec === current) passed = false;
+      a.classList.toggle("active", sec === current);
+      a.classList.toggle("done", passed);
+      if (sec === current) a.setAttribute("aria-current", "true");
+      else a.removeAttribute("aria-current");
+    });
+    var active = links[current.id];
+    var bar = document.getElementById("sidebar");
+    if (active && bar.scrollWidth > bar.clientWidth) {
+      bar.scrollLeft = active.offsetLeft - bar.clientWidth / 2 + active.clientWidth / 2;
+    }
+  }
+
+  // ---------- theme ----------
+  var root = document.documentElement;
+  // Every page opens light (data-theme="light" on <html>) until the learner
+  // switches; the choice is shared by all lessons and the library.
+  var THEME_KEY = "teach:theme";
+  var savedTheme = "";
+  try { savedTheme = localStorage.getItem(THEME_KEY) || ""; } catch (e) {}
+  if (!savedTheme) savedTheme = load("theme", "");
+  if (savedTheme) root.setAttribute("data-theme", savedTheme);
+  document.getElementById("theme-toggle").addEventListener("click", function () {
+    var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    loadBespokes();
+  });
+
+  // ---------- quiz ----------
+  var answers = {};
+  function updateScore() {
+    var answered = Object.keys(answers).length;
+    var correct = Object.keys(answers).filter(function (k) { return answers[k]; }).length;
+    var score = document.getElementById("score");
+    if (score) score.textContent = answered + " of " + quiz.length + " answered · " + correct + " correct";
+    var done = document.getElementById("quiz-done");
+    if (done && answered === quiz.length) {
+      var msg =
+        correct === quiz.length ? "All " + correct + " right. You've got this." :
+        correct >= Math.ceil(quiz.length / 2) ? correct + " of " + quiz.length + " right. Reread the concepts you missed, then try again." :
+        correct + " of " + quiz.length + " right. Worth another pass through the lesson.";
+      done.innerHTML = '<h3 class="serif" style="font-size:26px">' + esc(msg) + '</h3><div class="btn-row"><button type="button" class="btn" id="quiz-retry">Try again</button><a class="btn" href="../choose-first-offering/index.html">Continue the course</a></div>';
+      done.hidden = false;
+      document.getElementById("quiz-retry").addEventListener("click", resetQuiz);
+    }
+  }
+  function resetQuiz() {
+    answers = {};
+    document.querySelectorAll(".option").forEach(function (b) {
+      b.disabled = false;
+      b.classList.remove("right", "wrong", "dim");
+      b.querySelector(".why").hidden = true;
+    });
+    document.getElementById("quiz-done").hidden = true;
+    updateScore();
+    document.getElementById("q-0").scrollIntoView();
+  }
+  document.querySelectorAll(".option").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var qi = Number(btn.getAttribute("data-q"));
+      var oi = Number(btn.getAttribute("data-o"));
+      var q = quiz[qi];
+      var buttons = document.querySelectorAll('.option[data-q="' + qi + '"]');
+      buttons.forEach(function (b, i) {
+        b.disabled = true;
+        var isRight = q.options[i].correct === true;
+        if (isRight) b.classList.add("right");
+        else if (i === oi) b.classList.add("wrong");
+        else b.classList.add("dim");
+        if (isRight || i === oi) b.querySelector(".why").hidden = false;
+      });
+      answers[qi] = q.options[oi].correct === true;
+      updateScore();
+    });
+  });
+
+  // ---------- next + share ----------
+  document.querySelectorAll("[data-copy-next]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      copy(lesson.next[Number(b.getAttribute("data-copy-next"))].prompt, null);
+    });
+  });
+  document.querySelectorAll("[data-copy]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var el = document.getElementById(b.getAttribute("data-copy"));
+      copy(el.value, el);
+    });
+  });
+  // X counts every link as 23 characters.
+  function xLength(t) { return t.replace(/https?:\/\/\S+/g, "x".repeat(23)).length; }
+  function fit(el) { el.style.height = "auto"; el.style.height = el.scrollHeight + 2 + "px"; }
+  [
+    { id: "share-li", limit: 3000, len: function (t) { return t.length; }, url: function (t) { return "https://www.linkedin.com/feed/?shareActive=true&text=" + encodeURIComponent(t); } },
+    { id: "share-x", limit: 280, len: xLength, url: function (t) { return "https://x.com/intent/post?text=" + encodeURIComponent(t); } },
+  ].forEach(function (p) {
+    var box = document.getElementById(p.id);
+    if (!box) return;
+    var count = document.getElementById(p.id + "-count"), open = document.getElementById(p.id + "-open");
+    function update() {
+      var n = p.len(box.value);
+      count.textContent = n + " / " + p.limit;
+      count.classList.toggle("over", n > p.limit);
+      open.href = p.url(box.value);
+      fit(box);
+    }
+    box.addEventListener("input", update);
+    update();
+    addEventListener("load", function () { fit(box); });
+  });
+
+  // ---------- bespoke animations ----------
+  var THEME_VARS = ["--bg", "--bg-2", "--fg", "--muted", "--card", "--card-2", "--hairline", "--hairline-2", "--glass", "--glass-2", "--brand", "--brand-text", "--brand-fg", "--green", "--green-bg", "--red", "--red-bg", "--amber", "--amber-bg", "--violet", "--sans", "--mono"];
+  // Colours come from the figure, not the page: diagrams stay light in dark mode.
+  function loadBespokes() {
+    var close = "<" + "/script>";
+    document.querySelectorAll("iframe[data-bespoke]").forEach(function (f) {
+      var a = bespokes[Number(f.getAttribute("data-bespoke"))] || {};
+      var cs = getComputedStyle(f.closest(".anim") || root);
+      var vars = THEME_VARS.map(function (n) { return n + ":" + cs.getPropertyValue(n).trim(); }).join(";");
+      var dark = cs.getPropertyValue("color-scheme").trim() === "dark";
+      f.srcdoc =
+        '<!doctype html><html><head><meta charset="utf-8">' +
+        '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; script-src \'unsafe-inline\'; img-src data:">' +
+        "<style>:root{" + vars + ";color-scheme:" + (dark ? "dark" : "light") + "}" +
+        "html,body{margin:0;height:100%;overflow:hidden;background:transparent;color:var(--fg);font-family:var(--sans)}</style>" +
+        "<style>" + String(a.css || "") + "</style></head><body>" + String(a.html || "") +
+        "<script>" + String(a.js || "") + close + "</body></html>";
+    });
+  }
+  loadBespokes();
+
+  // ---------- animated figures ----------
+  // One player per figure. Beat 0 is the empty stage; beat k switches on every
+  // element with data-beat <= k and marks data-beat == k as "now". After the
+  // last beat the figure holds, then starts again. It only runs while the
+  // figure is on screen, and never when the reader asked for reduced motion:
+  // then the finished picture is shown, still.
+  var BEAT_MS = 1700, START_MS = 700, END_MS = 3200, ARRIVE_MS = 900;
+  var reducedMotion = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  function renderSequence(fig, v, i, still) {
+    var actors = fig.querySelectorAll(".as-actor");
+    var msg = fig.querySelector(".as-msg");
+    var steps = v.steps || [];
+    var says = [];
+    for (var k = 0; k < i && k < steps.length; k++) if (steps[k].at !== undefined) says[actorIndex(v, steps[k].at)] = steps[k].says;
+    Array.prototype.forEach.call(actors, function (el, a) {
+      var state = el.querySelector(".as-state");
+      state.innerHTML = says[a] ? rich(says[a]) : "";
+      el.classList.remove("now", "recv");
+    });
+    clearTimeout(fig._arrive);
+    var step = steps[i - 1];
+    if (!step || still) { msg.classList.remove("show"); return; }
+    if (step.at !== undefined) {
+      msg.classList.remove("show");
+      actors[actorIndex(v, step.at)].classList.add("now");
+      return;
+    }
+    var from = actorIndex(v, step.from), to = actorIndex(v, step.to);
+    msg.innerHTML = (to < from ? "← " : "") + rich(step.label) + (to < from ? "" : " →");
+    msg.style.transition = "none";
+    msg.style.setProperty("--at", from);
+    msg.classList.add("show");
+    actors[from].classList.add("now");
+    void msg.offsetWidth; // start the trip from the sender, not from wherever the last message stopped
+    msg.style.transition = "";
+    msg.style.setProperty("--at", to);
+    fig._arrive = setTimeout(function () {
+      actors[from].classList.remove("now");
+      actors[to].classList.add("recv");
+    }, ARRIVE_MS);
+  }
+
+  function renderBeat(fig, entry, i, still) {
+    Array.prototype.forEach.call(fig.querySelectorAll("[data-beat]"), function (el) {
+      var k = Number(el.getAttribute("data-beat"));
+      el.classList.toggle("on", k <= i);
+      el.classList.toggle("now", !still && k === i);
+    });
+    if (entry.v.type === "sequence") renderSequence(fig, entry.v, i, still);
+  }
+
+  function startFigure(fig) {
+    var entry = visuals[Number(fig.getAttribute("data-anim"))];
+    if (!entry) return;
+    var n = entry.beats;
+    if (reducedMotion || !n) { fig.classList.add("still"); renderBeat(fig, entry, n, true); return; }
+
+    var i = 0, timer = null, inView = false, paused = false;
+    var btn = fig.querySelector(".anim-btn");
+    function schedule() {
+      clearTimeout(timer);
+      if (!inView || paused) return;
+      timer = setTimeout(function () {
+        i = i >= n ? 0 : i + 1;
+        renderBeat(fig, entry, i, false);
+        schedule();
+      }, i === 0 ? START_MS : i === n ? END_MS : BEAT_MS);
+    }
+    btn.hidden = false;
+    btn.addEventListener("click", function () {
+      paused = !paused;
+      btn.textContent = paused ? "Play" : "Pause";
+      schedule();
+    });
+    renderBeat(fig, entry, 0, false);
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (items) {
+        inView = items[items.length - 1].isIntersecting;
+        schedule();
+      }, { threshold: 0.35 }).observe(fig);
+    } else { inView = true; schedule(); }
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("figure.anim"), startFigure);
+
+  // ---------- feedback ----------
+  // A thumbs up or down on each section, then an optional note. Kept in this
+  // browser only for now; every change also fires a "teach:feedback" event so
+  // sending it somewhere later is one listener.
+  var FEEDBACK_ASK = { section: "What did you think about this section?", lesson: "Help us improve your experience. Did this lesson help you?" };
+  var feedback = {};
+  try { feedback = JSON.parse(load("feedback", "{}")) || {}; } catch (e) {}
+
+  function feedbackBox(box) {
+    var id = box.getAttribute("data-feedback");
+    var kind = id === "lesson" ? "lesson" : "section";
+    box.setAttribute("role", "group");
+    box.setAttribute("aria-label", "Feedback");
+    box.innerHTML =
+      '<div class="fb-row"><span class="fb-ask">' + esc(FEEDBACK_ASK[kind]) + "</span>" +
+      '<span class="fb-votes">' +
+      '<button type="button" class="fb-vote" data-vote="up" aria-pressed="false" aria-label="Yes, helpful"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/></svg></button>' +
+      '<button type="button" class="fb-vote" data-vote="down" aria-pressed="false" aria-label="No, not helpful"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 14V3M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/></svg></button>' +
+      "</span></div>" +
+      '<form class="fb-form" inert><div class="fb-inner"><div class="fb-field"><textarea rows="3" maxlength="1000" placeholder="Tell us more (optional)" aria-label="Tell us more (optional)"></textarea>' +
+      '<div class="fb-bar"><span class="fb-count" hidden></span>' +
+      '<button type="submit" class="btn primary fb-send" tabindex="-1">Send</button></div></div></div></form>' +
+      '<p class="fb-thanks" hidden aria-live="polite"><span>Thanks, that helps.</span> <button type="button" class="fb-edit">Add a note</button></p>';
+    var form = box.querySelector(".fb-form");
+    var area = form.querySelector("textarea");
+    var thanks = box.querySelector(".fb-thanks");
+    var votes = box.querySelectorAll(".fb-vote");
+    var sendBtn = form.querySelector(".fb-send");
+    var count = form.querySelector(".fb-count");
+    var NOTE_MAX = area.maxLength;
+    // Send only appears once there is something to send; the countdown only
+    // in the last 100 characters.
+    function syncSend() {
+      var has = !!area.value.trim();
+      form.classList.toggle("has-text", has);
+      sendBtn.tabIndex = has ? 0 : -1;
+      var left = NOTE_MAX - area.value.length;
+      count.hidden = left > 100;
+      count.textContent = left === 1 ? "1 character left" : left + " characters left";
+      count.classList.toggle("low", left <= 20);
+    }
+    area.addEventListener("input", syncSend);
+
+    function store(entry) {
+      if (entry) feedback[id] = entry; else delete feedback[id];
+      save("feedback", JSON.stringify(feedback));
+      try {
+        document.dispatchEvent(new CustomEvent("teach:feedback", { detail: { lesson: meta.slug, section: id, vote: entry ? entry.vote : null, note: entry ? entry.note : "" } }));
+      } catch (e) {}
+      // The lesson server sends it on (or queues it while offline). Opened as a file, it stays in this browser.
+      if (onServer && consent === true) {
+        sharingSaved.then(function () {
+          return api("POST", "/api/feedback", { lesson: thisDir, section: id, vote: entry ? entry.vote : null, note: entry ? entry.note : "" });
+        }).catch(function () {});
+      }
+    }
+    function show(state) {
+      var entry = feedback[id];
+      votes.forEach(function (b) { b.setAttribute("aria-pressed", String(!!entry && entry.vote === b.getAttribute("data-vote"))); });
+      box.classList.toggle("voted", !!entry);
+      // Closed, the form is inert so its fields can't be tabbed into while it's collapsed.
+      form.classList.toggle("open", state === "note");
+      form.inert = state !== "note";
+      thanks.hidden = state !== "thanks";
+      if (entry) thanks.querySelector(".fb-edit").textContent = entry.note ? "Edit your note" : "Add a note";
+    }
+    votes.forEach(function (b) {
+      // Feedback needs a yes to sharing first.
+      b.addEventListener("click", function () { withConsent(function () { choose(b.getAttribute("data-vote")); }); });
+    });
+    function choose(vote) {
+      var entry = feedback[id];
+      if (entry && entry.vote === vote) { store(null); show(""); return; }
+      store({ vote: vote, note: entry ? entry.note : "", at: new Date().toISOString() });
+      // A small pop and ring on the chosen thumb says the vote landed.
+      var picked = box.querySelector('.fb-vote[data-vote="' + vote + '"]');
+      picked.classList.remove("got");
+      void picked.offsetWidth;
+      picked.classList.add("got");
+      area.value = feedback[id].note;
+      syncSend();
+      show("note");
+      area.focus({ preventScroll: true });
+    }
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var entry = feedback[id];
+      if (!entry || !area.value.trim()) return;
+      entry.note = area.value.trim();
+      entry.at = new Date().toISOString();
+      store(entry);
+      show("thanks");
+    });
+    thanks.querySelector(".fb-edit").addEventListener("click", function () {
+      area.value = (feedback[id] && feedback[id].note) || "";
+      syncSend();
+      show("note");
+      area.focus({ preventScroll: true });
+    });
+    area.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { show("thanks"); }
+      if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event("submit")); }
+    });
+    show(feedback[id] ? "thanks" : "");
+  }
+
+  document.querySelectorAll("section.public-feedback-disabled").forEach(function (sec) {
+    var box = document.createElement("div");
+    box.className = "feedback";
+    box.setAttribute("data-feedback", sec.id.slice(2));
+    sec.appendChild(box);
+  });
+  document.querySelectorAll("[data-feedback]").forEach(feedbackBox);
+
+  // ---------- data sharing consent ----------
+  // Asked the first time the learner gives feedback, in a card pinned to the bottom: may teach send lessons and feedback to
+  // GrowthX? Feedback needs a yes. Every answer fires "teach:consent" for the
+  // backend to pick up later.
+  // For lessons opened as a file (no lesson server): with it on, the answer is
+  // remembered in this browser. Off for now, so a file-opened lesson asks each time.
+  var PERSIST_CONSENT = false;
+  var CONSENT_KEY = "teach:consent";
+  var consent = null;
+  if (PERSIST_CONSENT) {
+    try { var savedConsent = localStorage.getItem(CONSENT_KEY); if (savedConsent) consent = savedConsent === "yes"; } catch (e) {}
+  }
+  var afterConsent = null;
+  // Served by the lesson server, the answer lives in <home>/sharing.json, so it's asked once for every lesson.
+  var onServer = false;
+  var sharingSaved = Promise.resolve();
+  if (onServer) {
+    sharingSaved = api("GET", "/api/sharing").then(function (r) { if (consent === null) consent = r.share; }).catch(function () {});
+  }
+
+  var consentDlg = document.createElement("dialog");
+  consentDlg.className = "consent";
+  consentDlg.setAttribute("aria-labelledby", "consent-title");
+  consentDlg.innerHTML =
+    '<button type="button" class="consent-x" aria-label="Close">' +
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>' +
+    '<div class="consent-body">' +
+    '<p class="consent-need" hidden>You need to accept this to share feedback.</p>' +
+    '<h3 id="consent-title">Help make teach better</h3>' +
+    "<p>Share your lessons and feedback with GrowthX so we can improve the teach experience. We never upload your chat, your code or your files.</p>" +
+    '<button type="button" class="consent-more" aria-expanded="false" aria-controls="consent-details">' +
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>What we collect</button>' +
+    '<div class="consent-details" id="consent-details" inert><div><ul>' +
+    "<li>The lessons teach makes for you</li>" +
+    "<li>Your thumbs up, thumbs down and notes</li>" +
+    "<li>An anonymous ID. No name or email.</li>" +
+    "</ul></div></div>" +
+    '<p class="consent-fine">By choosing Agree, you agree to share this data to improve GrowthX teach.</p></div>' +
+    '<div class="consent-actions"><button type="button" class="btn primary" data-consent="yes">Agree</button><button type="button" class="btn" data-consent="no">No thanks</button></div>';
+  document.body.appendChild(consentDlg);
+  // Dims the page behind the card. Clicking it closes the card, like the × does.
+  var consentShade = document.createElement("div");
+  consentShade.className = "consent-shade";
+  consentShade.hidden = true;
+  document.body.insertBefore(consentShade, consentDlg);
+
+  var moreBtn = consentDlg.querySelector(".consent-more");
+  var details = consentDlg.querySelector(".consent-details");
+  moreBtn.addEventListener("click", function () {
+    var open = moreBtn.getAttribute("aria-expanded") !== "true";
+    moreBtn.setAttribute("aria-expanded", String(open));
+    details.classList.toggle("open", open);
+    details.inert = !open;
+  });
+
+  // Line the card up with the lesson's content column.
+  function placeConsent() {
+    var col = document.querySelector(".content");
+    if (!col) return;
+    var r = col.getBoundingClientRect();
+    consentDlg.style.left = r.left + "px";
+    consentDlg.style.width = r.width + "px";
+  }
+  addEventListener("resize", placeConsent);
+
+  var consentShown = false;
+  function closeConsent() {
+    consentShown = false;
+    consentDlg.classList.remove("open");
+    consentShade.classList.remove("open");
+    setTimeout(function () {
+      if (consentDlg.classList.contains("open")) return;
+      if (consentDlg.open) consentDlg.close();
+      consentShade.hidden = true;
+    }, 200);
+  }
+  function setConsent(value) {
+    consent = value;
+    if (PERSIST_CONSENT) { try { localStorage.setItem(CONSENT_KEY, value ? "yes" : "no"); } catch (e) {} }
+    // Feedback waits for this, so the server never sees a vote before the yes.
+    if (onServer) sharingSaved = api("POST", "/api/sharing", { share: value }).catch(function () {});
+    closeConsent();
+    try { document.dispatchEvent(new CustomEvent("teach:consent", { detail: { share: value } })); } catch (e) {}
+    var next = afterConsent;
+    afterConsent = null;
+    if (value && next) next();
+    else toast(value ? "Thanks for sharing." : "Nothing will be shared.");
+  }
+  // needed: opened because the learner tried to give feedback without a yes.
+  function openConsent(needed, then) {
+    afterConsent = then || null;
+    consentDlg.querySelector(".consent-need").hidden = !needed;
+    // Non-modal: the lesson stays usable while the card waits at the bottom.
+    if (!consentDlg.open) {
+      placeConsent();
+      consentDlg.show();
+    }
+    consentShade.hidden = false;
+    consentShown = true;
+    requestAnimationFrame(function () {
+      if (!consentShown) return;
+      consentDlg.classList.add("open");
+      consentShade.classList.add("open");
+    });
+  }
+  // Runs fn now if sharing is on, otherwise asks first and runs it on a yes.
+  // The first ask is plain; after a no, it says feedback needs a yes.
+  function withConsent(fn) {
+    if (consent === true) fn();
+    else openConsent(consent === false, fn);
+  }
+  consentDlg.querySelectorAll("[data-consent]").forEach(function (b) {
+    b.addEventListener("click", function () { setConsent(b.getAttribute("data-consent") === "yes"); });
+  });
+  // Closing is neither a yes nor a no: nothing is recorded, so it asks again next time.
+  function dismissConsent() {
+    afterConsent = null;
+    closeConsent();
+  }
+  consentDlg.querySelector(".consent-x").addEventListener("click", dismissConsent);
+  consentShade.addEventListener("click", dismissConsent);
+
+  // ---------- jargon tooltips ----------
+  // Underline the first use of each glossary term per section; hover, focus or tap shows the tip.
+  (function applyGlossary() {
+    var glossary = (lesson.glossary || []).filter(function (g) { return g && g.term && g.tip; })
+      .sort(function (a, b) { return b.term.length - a.term.length; });
+    if (!glossary.length) return;
+    var reEsc = function (t) { return t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); };
+    var scopes = document.querySelectorAll(".hero, section.block[id^='c-']");
+    scopes.forEach(function (scope) {
+      var used = {};
+      var walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
+        acceptNode: function (n) {
+          var p = n.parentElement;
+          if (!p || p.closest("h1, h2, h3, .eyebrow, .term, code, pre, button, figure, .feedback")) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      var nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(function (node) {
+        glossary.forEach(function (g) {
+          var key = g.term.toLowerCase();
+          if (used[key] || !node.parentNode) return;
+          var m = new RegExp("\\b" + reEsc(g.term) + "\\b", "i").exec(node.nodeValue);
+          if (!m) return;
+          used[key] = true;
+          var after = node.splitText(m.index);
+          var rest = after.splitText(m[0].length);
+          var span = document.createElement("span");
+          span.className = "term";
+          span.tabIndex = 0;
+          span.setAttribute("data-tip", g.tip);
+          span.setAttribute("aria-label", m[0] + ": " + g.tip);
+          span.textContent = m[0];
+          after.parentNode.replaceChild(span, after);
+          node = rest;
+        });
+      });
+    });
+
+    var tip = document.createElement("div");
+    tip.className = "term-tip";
+    tip.setAttribute("role", "tooltip");
+    tip.hidden = true;
+    document.body.appendChild(tip);
+    var current = null;
+    function show(el) {
+      current = el;
+      tip.textContent = el.getAttribute("data-tip");
+      tip.hidden = false;
+      var r = el.getBoundingClientRect();
+      var w = tip.offsetWidth, h = tip.offsetHeight;
+      var left = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), innerWidth - w - 8);
+      var top = r.top - h - 10 < 8 ? r.bottom + 10 : r.top - h - 10;
+      tip.style.left = left + "px";
+      tip.style.top = top + "px";
+    }
+    function hide() { current = null; tip.hidden = true; }
+    document.querySelectorAll(".term").forEach(function (el) {
+      el.addEventListener("mouseenter", function () { show(el); });
+      el.addEventListener("mouseleave", hide);
+      el.addEventListener("focus", function () { show(el); });
+      el.addEventListener("blur", hide);
+      el.addEventListener("click", function (e) { e.stopPropagation(); current === el ? hide() : show(el); });
+      el.addEventListener("mouseenter", function () { seenHint("terms"); });
+      el.addEventListener("click", function () { seenHint("terms"); });
+    });
+    document.addEventListener("click", hide);
+    addEventListener("scroll", function () { if (current) show(current); }, { passive: true });
+  })();
+
+  // ---------- one-time hints ----------
+  // Each hint shows once per browser (remembered when storage is available).
+  function hintSeen(name) {
+    try { return localStorage.getItem("teach:hint:" + name) === "1"; } catch (e) { return !!hintSeen.mem[name]; }
+  }
+  hintSeen.mem = {};
+  function seenHint(name) {
+    hintSeen.mem[name] = true;
+    try { localStorage.setItem("teach:hint:" + name, "1"); } catch (e) {}
+    var open = document.querySelector('.coach[data-hint="' + name + '"]');
+    if (open) open.remove();
+  }
+  function showCoach(name, html, anchor, opts) {
+    opts = opts || {};
+    if (hintSeen(name) || document.querySelector(".coach")) return false;
+    var c = document.createElement("div");
+    c.className = "coach" + (opts.big ? " big" : "");
+    c.setAttribute("role", "status");
+    c.setAttribute("data-hint", name);
+    c.innerHTML = (opts.demo ? '<div class="coach-demo" aria-hidden="true"><span class="cd-line"><span class="cd-sel">select any text</span> in the lesson</span><span class="cd-pill">Ask about this</span></div>' : "") +
+      "<div>" + html + '</div><button type="button">Got it</button>';
+    c.querySelector("button").addEventListener("click", function () { seenHint(name); setTimeout(maybeAskHint, 400); });
+    document.body.appendChild(c);
+    function place() {
+      if (!c.isConnected) return;
+      if (opts.corner) { c.classList.add("corner"); c.style.right = "20px"; c.style.bottom = "92px"; return; }
+      var r = anchor.getBoundingClientRect(), w = c.offsetWidth, h = c.offsetHeight;
+      var left = Math.min(Math.max(12, r.left + r.width / 2 - 24), innerWidth - w - 12);
+      var below = r.bottom + h + 14 < innerHeight;
+      c.classList.toggle("below", below);
+      c.classList.toggle("above", !below);
+      c.style.left = left + "px";
+      c.style.top = (below ? r.bottom + 10 : r.top - h - 10) + "px";
+      c.style.setProperty("--arrow-x", Math.max(12, Math.min(w - 24, r.left + r.width / 2 - left - 6)) + "px");
+    }
+    place();
+    addEventListener("scroll", place, { passive: true });
+    addEventListener("resize", place);
+    return true;
+  }
+
+  // Hint 1: the highlighted words, when the first one scrolls into view.
+  var firstTerm = document.querySelector(".content .term");
+  if (firstTerm && !hintSeen("terms") && "IntersectionObserver" in window) {
+    var termWatch = new IntersectionObserver(function (items) {
+      if (items[0].isIntersecting) {
+        termWatch.disconnect();
+        showCoach("terms", "<b>Highlighted words</b> have a quick, plain explanation. Hover or tap one to see it.", firstTerm);
+      }
+    }, { threshold: 1, rootMargin: "0px 0px -30% 0px" });
+    termWatch.observe(firstTerm);
+  }
+  // Hint 2: the tutor, once the reader is into the first concept and hint 1 is done.
+  function maybeAskHint() {
+    if (hintSeen("ask") || (firstTerm && !hintSeen("terms"))) return;
+    var firstConcept = document.querySelector("section.block[id^='c-']");
+    if (firstConcept && firstConcept.getBoundingClientRect().top < innerHeight * 0.5) {
+      if (showCoach("ask", "<b>Stuck on something?</b> Select any text and tap <b>Ask about this</b>, or open the tutor below. You get a plain-words answer right here.", null, { corner: true, big: true, demo: true })) {
+        fab.classList.add("pulse");
+      }
+    }
+  }
+  addEventListener("scroll", maybeAskHint, { passive: true });
+
+  // ---------- lesson tutor (chat) ----------
+  // With the teach lesson server (http://localhost) questions are answered right
+  // here by Claude Code on this computer. Opened as a plain file, the same panel
+  // copies the question so it can be pasted into the Claude chat instead.
+  var lessonDir = (location.pathname.match(/\/lessons\/([a-z0-9-]+)\//) || [])[1] || "";
+  var chatLive = false;
+  var thread = [];
+  var pendingQuote = null;
+  var waiting = false;
+  var localKey = storeKey + ":questions";
+
+  var fab = document.createElement("button");
+  fab.type = "button";
+  fab.className = "tutor-fab";
+  fab.setAttribute("aria-label", "Ask the lesson tutor");
+  fab.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.4c-.5.4-1.3 0-1.3-.6V16A2.5 2.5 0 0 1 4 13.5z" fill="currentColor"/><circle cx="8.5" cy="9.5" r="1.2" fill="var(--brand)"/><circle cx="12" cy="9.5" r="1.2" fill="var(--brand)"/><circle cx="15.5" cy="9.5" r="1.2" fill="var(--brand)"/></svg><span class="tutor-dot" hidden></span>';
+  document.body.appendChild(fab);
+
+  var panel = document.createElement("section");
+  panel.className = "tutor";
+  panel.hidden = true;
+  panel.setAttribute("role", "dialog");
+  panel.setAttribute("aria-label", "Lesson tutor");
+  panel.innerHTML =
+    '<div class="tutor-resize" role="separator" aria-orientation="vertical" aria-label="Resize tutor panel" tabindex="0"></div>' +
+    '<header class="tutor-head">' +
+    '<div class="tutor-title"><b>Lesson tutor</b></div>' +
+    '<button type="button" class="tutor-x" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>' +
+    '<div class="tutor-body" id="tutor-body" aria-live="polite"></div>' +
+    '<div class="tutor-compose">' +
+    '<div class="tutor-quote" hidden><span class="tq-label">Asking about</span><q></q><button type="button" aria-label="Remove passage">×</button></div>' +
+    '<form class="tutor-form"><label class="sr-only" for="tutor-input">Your question</label>' +
+    '<textarea id="tutor-input" rows="1" placeholder="Ask anything about this lesson…"></textarea>' +
+    '<button type="submit" class="tutor-send" aria-label="Copy question"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>' +
+    '<p class="tutor-foot" id="tutor-foot"></p>';
+  document.body.appendChild(panel);
+  var body = panel.querySelector("#tutor-body");
+  var input = panel.querySelector("#tutor-input");
+  var quoteBox = panel.querySelector(".tutor-quote");
+
+  function md(s) {
+    var blocks = String(s || "").trim().split(/\n{2,}/);
+    var bullet = /^\s*([-*•]|\d+\.)\s+/;
+    return blocks.map(function (b) {
+      // Group consecutive bullet lines into a list and other lines into a paragraph.
+      var out = "", para = [], items = [];
+      function flush() {
+        if (para.length) out += "<p>" + rich(para.join(" ")) + "</p>";
+        if (items.length) out += "<ul>" + items.map(function (l) { return "<li>" + rich(l) + "</li>"; }).join("") + "</ul>";
+        para = []; items = [];
+      }
+      b.split("\n").forEach(function (l) {
+        if (bullet.test(l)) { if (para.length) flush(); items.push(l.replace(bullet, "")); }
+        else { if (items.length) flush(); para.push(l); }
+      });
+      flush();
+      return out;
+    }).join("");
+  }
+  function scrollBottom() { body.scrollTop = body.scrollHeight; }
+  function renderEmpty() {
+    if (thread.length) return;
+    body.innerHTML =
+      '<div class="tutor-hello"><h2>What can I explain?</h2><p>Type a question about this lesson, then copy it into your AI chat.</p>' +
+      '<p class="tutor-tip">Tip: select any text in the lesson and tap <b>Ask about this</b>.</p>' +
+      '<div class="tutor-chips">' + ["Explain the main idea more simply", "Give me another real-life example", "How does this connect to my work?"].map(function (t) {
+        return '<button type="button" class="tutor-chip">' + esc(t) + "</button>";
+      }).join("") + "</div></div>";
+    body.querySelectorAll(".tutor-chip").forEach(function (b) { b.addEventListener("click", function () { send(b.textContent); }); });
+  }
+  function addTurn(q, answerHtml, opts) {
+    opts = opts || {};
+    var hello = body.querySelector(".tutor-hello");
+    if (hello) hello.remove();
+    var wrap = document.createElement("div");
+    wrap.className = "tutor-turn";
+    if (q.id) wrap.setAttribute("data-q", q.id);
+    wrap.innerHTML =
+      (q.quote ? '<div class="tutor-cite"><q>' + esc(q.quote.length > 180 ? q.quote.slice(0, 180) + "…" : q.quote) + "</q>" +
+        (q.sectionId ? '<a href="#' + esc(q.sectionId) + '" class="tutor-jump">Show in lesson</a>' : "") + "</div>" : "") +
+      '<div class="bubble me">' + esc(q.question) + "</div>" +
+      '<div class="bubble bot">' + (answerHtml || '<span class="typing"><i></i><i></i><i></i></span>') + "</div>";
+    body.appendChild(wrap);
+    var jump = wrap.querySelector(".tutor-jump");
+    if (jump) jump.addEventListener("click", function (e) {
+      e.preventDefault();
+      var m = document.querySelector('mark.asked[data-q="' + q.id + '"]') || document.getElementById(q.sectionId);
+      if (m) { m.scrollIntoView({ block: "center" }); if (m.classList) { m.classList.add("flash"); setTimeout(function () { m.classList.remove("flash"); }, 1600); } }
+      if (innerWidth < 640) closePanel();
+    });
+    if (!opts.quiet) scrollBottom();
+    return wrap;
+  }
+  function openPanel() {
+    panel.hidden = false;
+    document.documentElement.classList.add("tutor-open");
+    fab.classList.add("open");
+    fab.classList.remove("pulse");
+    fab.querySelector(".tutor-dot").hidden = true;
+    seenHint("ask");
+    renderEmpty();
+    setTimeout(function () { input.focus(); scrollBottom(); }, 30);
+  }
+  function closePanel() { panel.hidden = true; document.documentElement.classList.remove("tutor-open"); fab.classList.remove("open"); }
+  fab.addEventListener("click", function () { panel.hidden ? openPanel() : closePanel(); });
+  panel.querySelector(".tutor-x").addEventListener("click", closePanel);
+  panel.addEventListener("keydown", function (e) { if (e.key === "Escape") closePanel(); });
+
+  // Drag the panel's left edge to resize it. The width is shared by every lesson in this browser.
+  var resizer = panel.querySelector(".tutor-resize");
+  var widthKey = "teach:tutor-width";
+  function setWidth(w, save) {
+    var max = Math.max(320, Math.min(900, innerWidth - 420));
+    w = Math.round(Math.min(max, Math.max(320, w)));
+    document.documentElement.style.setProperty("--tutor-w", w + "px");
+    resizer.setAttribute("aria-valuenow", w);
+    if (save) { try { localStorage.setItem(widthKey, w); } catch (e) {} }
+  }
+  function savedWidth() { try { return +localStorage.getItem(widthKey) || 0; } catch (e) { return 0; } }
+  if (savedWidth()) setWidth(savedWidth());
+  addEventListener("resize", function () { if (savedWidth()) setWidth(savedWidth()); });
+  resizer.addEventListener("pointerdown", function (e) {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    resizer.setPointerCapture(e.pointerId);
+    document.documentElement.classList.add("tutor-resizing");
+  });
+  resizer.addEventListener("pointermove", function (e) {
+    if (resizer.hasPointerCapture(e.pointerId)) setWidth(innerWidth - e.clientX);
+  });
+  function endResize(e) {
+    if (!resizer.hasPointerCapture(e.pointerId)) return;
+    resizer.releasePointerCapture(e.pointerId);
+    document.documentElement.classList.remove("tutor-resizing");
+    setWidth(panel.offsetWidth, true);
+  }
+  resizer.addEventListener("pointerup", endResize);
+  resizer.addEventListener("pointercancel", endResize);
+  resizer.addEventListener("dblclick", function () {
+    document.documentElement.style.removeProperty("--tutor-w");
+    try { localStorage.removeItem(widthKey); } catch (e) {}
+  });
+  resizer.addEventListener("keydown", function (e) {
+    var step = e.shiftKey ? 80 : 20;
+    if (e.key === "ArrowLeft") { e.preventDefault(); setWidth(panel.offsetWidth + step, true); }
+    if (e.key === "ArrowRight") { e.preventDefault(); setWidth(panel.offsetWidth - step, true); }
+  });
+
+  function setQuote(p) {
+    pendingQuote = p;
+    quoteBox.hidden = !p;
+    if (p) quoteBox.querySelector("q").textContent = p.text.length > 160 ? p.text.slice(0, 160) + "…" : p.text;
+  }
+  quoteBox.querySelector("button").addEventListener("click", function () { setQuote(null); });
+
+  function api(method, url, data) {
+    return fetch(url, { method: method, headers: { "Content-Type": "application/json", "X-Teach": "1" }, body: data ? JSON.stringify(data) : undefined })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || "Something went wrong."); return j; }); });
+  }
+  function saveLocal() { try { localStorage.setItem(localKey, JSON.stringify(thread)); } catch (e) {} }
+
+  function send(text) {
+    var question = String(text || "").trim();
+    if (!question || waiting) return;
+    var p = pendingQuote;
+    var q = { question: question, quote: p ? p.text : "", section: p ? p.section : "", sectionId: p ? p.sectionId : "" };
+    input.value = "";
+    autosize();
+    setQuote(null);
+    if (!chatLive) {
+      var prompt = 'Question about my GrowthX teach lesson "' + plain(meta.title || "") + '"' + (q.section ? " (section: " + q.section + ")" : "") + "\n\n" +
+        (q.quote ? "About this part:\n> " + q.quote + "\n\n" : "") + "My question: " + question;
+      q.id = "l" + Date.now().toString(36);
+      thread.push(q);
+      saveLocal();
+      if (p) markPassage(p, q.id);
+      addTurn(q, "<p>Your question is copied. Paste it into your AI chat for an explanation.</p>");
+      copy(prompt, null);
+      return;
+    }
+    waiting = true;
+    var turn = addTurn(q, null);
+    var history = thread.slice(-3).reduce(function (h, t) { return h.concat([{ role: "user", text: t.question }, { role: "assistant", text: t.answer || "" }]); }, []);
+    api("POST", "/api/ask", { lesson: lessonDir, question: question, quote: q.quote, section: q.section, sectionId: q.sectionId, history: history })
+      .then(function (entry) {
+        thread.push(entry);
+        turn.setAttribute("data-q", entry.id);
+        turn.querySelector(".bubble.bot").innerHTML = md(entry.answer);
+        if (p) markPassage(p, entry.id);
+        if (panel.hidden) fab.querySelector(".tutor-dot").hidden = false;
+      })
+      .catch(function (err) { turn.querySelector(".bubble.bot").innerHTML = '<p class="tutor-err">' + esc(err.message) + "</p>"; })
+      .then(function () { waiting = false; scrollBottom(); });
+  }
+  function autosize() { input.style.height = "auto"; input.style.height = Math.min(200, input.scrollHeight) + "px"; }
+  input.addEventListener("input", autosize);
+  input.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input.value); } });
+  panel.querySelector(".tutor-form").addEventListener("submit", function (e) { e.preventDefault(); send(input.value); });
+
+  // ---------- asked passages stay marked ----------
+  function textNodesIn(root) {
+    var out = [], w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) { return n.parentElement && n.parentElement.closest("figure, button, .term-tip, script, style") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; }
+    });
+    while (w.nextNode()) out.push(w.currentNode);
+    return out;
+  }
+  // Find the quote inside its section (whitespace-insensitive) and wrap each piece in <mark>.
+  function markText(section, quote, id) {
+    if (!section || !quote || document.querySelector('mark.asked[data-q="' + id + '"]')) return;
+    var nodes = textNodesIn(section), flat = "", map = [];
+    nodes.forEach(function (n, ni) {
+      for (var i = 0; i < n.nodeValue.length; i++) {
+        var ch = n.nodeValue[i];
+        if (/\s/.test(ch)) { if (flat.slice(-1) === " ") continue; ch = " "; }
+        flat += ch;
+        map.push([ni, i]);
+      }
+    });
+    var target = quote.replace(/…$/, "").replace(/\s+/g, " ").trim();
+    var at = flat.indexOf(target);
+    if (at < 0) return;
+    var end = at + target.length - 1, pieces = {};
+    for (var k = at; k <= end; k++) {
+      var m = map[k];
+      pieces[m[0]] = pieces[m[0]] || [m[1], m[1]];
+      pieces[m[0]][1] = m[1];
+    }
+    Object.keys(pieces).sort(function (a, b) { return b - a; }).forEach(function (ni) {
+      var n = nodes[ni], r = pieces[ni];
+      var mid = n.splitText(r[0]);
+      mid.splitText(r[1] - r[0] + 1);
+      var mark = document.createElement("mark");
+      mark.className = "asked";
+      mark.setAttribute("data-q", id);
+      mark.title = "You asked about this. Click to see the answer.";
+      mid.parentNode.replaceChild(mark, mid);
+      mark.appendChild(mid);
+      mark.addEventListener("click", function () { openThreadAt(id); });
+    });
+  }
+  function markPassage(p, id) {
+    window.getSelection && window.getSelection().removeAllRanges();
+    markText(document.getElementById(p.sectionId) || document.querySelector(".content"), p.text, id);
+  }
+  function openThreadAt(id) {
+    openPanel();
+    var t = body.querySelector('.tutor-turn[data-q="' + id + '"]');
+    if (t) { t.scrollIntoView({ block: "start" }); t.classList.add("flash"); setTimeout(function () { t.classList.remove("flash"); }, 1600); }
+  }
+  function restore(list) {
+    thread = list || [];
+    body.innerHTML = "";
+    thread.forEach(function (q) {
+      addTurn(q, q.answer ? md(q.answer) : "<p>Copied to paste into your AI chat.</p>", { quiet: true });
+      if (q.quote) markText(document.getElementById(q.sectionId) || document.querySelector(".content"), q.quote, q.id);
+    });
+    renderEmpty();
+  }
+
+  // Server or file? Load saved questions either way.
+  var foot = panel.querySelector("#tutor-foot");
+  if (false) {
+    fetch("/api/health").then(function (r) { return r.json(); }).then(function (h) {
+      chatLive = false;
+      foot.textContent = chatLive ? "Answered by Claude on your computer, using this lesson." : "The tutor needs Claude Code installed. Questions are copied for your AI chat instead.";
+      return chatLive ? api("GET", "/api/questions?lesson=" + encodeURIComponent(lessonDir)).then(function (r) { restore(r.questions); }) : restore(loadLocal());
+    }).catch(function () { foot.textContent = "Questions are copied for your AI chat."; restore(loadLocal()); });
+  } else {
+    foot.textContent = "Questions are copied for your AI chat; this page does not generate answers.";
+    restore(loadLocal());
+  }
+  function loadLocal() { try { return JSON.parse(localStorage.getItem(localKey) || "[]"); } catch (e) { return []; } }
+
+  // ---------- select text → ask ----------
+  var pop = document.createElement("div");
+  pop.className = "ask-pop";
+  pop.hidden = true;
+  pop.innerHTML = '<button type="button" data-act="ask"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.4c-.5.4-1.3 0-1.3-.6V16A2.5 2.5 0 0 1 4 13.5z" fill="currentColor"/></svg>Ask about this</button><button type="button" data-act="simple">Explain simply</button>';
+  document.body.appendChild(pop);
+  var picked = null;
+  function selectionInLesson() {
+    var sel = window.getSelection && window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.rangeCount) return null;
+    var text = sel.toString().replace(/\s+/g, " ").trim();
+    if (text.length < 3) return null;
+    var node = sel.getRangeAt(0).commonAncestorContainer;
+    var el = node.nodeType === 1 ? node : node.parentElement;
+    if (!el || !el.closest(".content") || el.closest("textarea, input, button, .options, figure, .tutor, .feedback")) return null;
+    var section = el.closest("[data-nav]");
+    return {
+      text: text.length > 600 ? text.slice(0, 600) + "…" : text,
+      section: section ? section.getAttribute("data-nav") : "",
+      sectionId: section ? section.id : "",
+      rect: sel.getRangeAt(0).getBoundingClientRect()
+    };
+  }
+  function updatePop() {
+    picked = selectionInLesson();
+    if (!picked) { pop.hidden = true; return; }
+    pop.hidden = false;
+    var w = pop.offsetWidth, h = pop.offsetHeight;
+    var left = Math.min(Math.max(8, picked.rect.left + picked.rect.width / 2 - w / 2), innerWidth - w - 8);
+    var top = picked.rect.top - h - 12;
+    pop.classList.toggle("below", top < 64);
+    if (top < 64) top = picked.rect.bottom + 12;
+    pop.style.left = left + scrollX + "px";
+    pop.style.top = top + scrollY + "px";
+  }
+  document.addEventListener("mouseup", function () { setTimeout(updatePop, 0); });
+  document.addEventListener("keyup", function (e) { if (e.shiftKey) updatePop(); });
+  document.addEventListener("selectionchange", function () { clearTimeout(updatePop.t); updatePop.t = setTimeout(updatePop, 350); });
+  pop.addEventListener("mousedown", function (e) { e.preventDefault(); });
+  pop.addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b || !picked) return;
+    var p = picked;
+    pop.hidden = true;
+    seenHint("ask");
+    openPanel();
+    setQuote(p);
+    if (b.getAttribute("data-act") === "simple") send("Can you explain this part more simply?");
+    else input.focus();
+  });
+
+  // ---------- reading progress ----------
+  var bar = document.getElementById("progress");
+  function onScroll() {
+    var max = document.documentElement.scrollHeight - innerHeight;
+    bar.style.width = (max > 0 ? Math.min(100, (scrollY / max) * 100) : 100) + "%";
+    updateSidebar();
+  }
+  addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+<script>(function(){const d={"item":{"slug":"departments-and-controls","title":"Which teams have to do the work?","question":"Which departments are involved and how does coverage vary by requirement?","concepts":["shared-controls: Shared controls","control-ownership: Control ownership"],"focus":"MapISO27001 leadershipITengineeringHRprocurementlegal facilities within scope; SOC2 engineeringITsecurityopsHRsuppliersleadership; PCIpaymentsengineeringITsecurityopsprocurement cardenvironmentimpact; DPDPprivacy/legalproductmarketingHRsupportIT; GDPRsimilarwhereapplies. Teach reusable safeguards acrossrequirements butmappingdoesnot meanfullcompliance. DepartureexampleHRnotifies,ITremovesacrosssystems,managerchecks,ownerrecordsevidence,independentreviewerchecks. Managementownsdecisions. Include detailed sourceddepartmentmatrix in workedExample. Do not present everycontrolmandatoryforall orgs or certificatesforlaws.","exercise":{"type":"roles","title":"Who owns each departure task?","prompt":"Assign the task to the team doing the work.","items":[{"prompt":"Notify the company of the employee’s leaving date.","options":["HR / people team","Certification auditor","Marketing"],"answer":0,"why":"The people team supplies the departure information that starts the process."},{"prompt":"Remove access and verify connected accounts are disabled.","options":["External assessor","IT / system owners","Sales"],"answer":1,"why":"Authorised system owners implement and verify the technical changes."},{"prompt":"Approve risk decisions and provide resources.","options":["Company leadership","The evidence tool","The certificate designer"],"answer":0,"why":"Management retains responsibility even when the provider coordinates."}]},"number":5,"directory":"2026-11-23-course-05-departments-and-controls"},"sources":[{"title":"Scrut controls and evidence FAQ","url":"https://www.scrut.io/faqs/general"},{"title":"ISO 27001 information security management","url":"https://www.iso.org/standard/27001"},{"title":"PCI DSS standard and scope","url":"https://www.pcisecuritystandards.org/standards/pci-dss/"},{"title":"AICPA SOC suite of services","url":"https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services"},{"title":"European Commission data protection explained","url":"https://commission.europa.eu/law/law-topic/data-protection/data-protection-explained_en"},{"title":"MeitY DPDP Rules commencement","url":"https://www.meity.gov.in/static/uploads/2025/11/53450e6e5dc0bfa85ebd78686cadad39.pdf"}],"refs":[{"id":"shared-controls","refs":[0,1,2,3,4]},{"id":"control-ownership","refs":[1,2]}],"extra":"\u003csection class=\"block course-section\" id=\"worked-example\" data-nav=\"Worked example\">\u003cdiv class=\"sec-head\">\u003cspan class=\"sec-num\">In practice\u003c/span>\u003ch2>A starting department matrix\u003c/h2>\u003c/div>\u003cp>This is a planning map derived from the scope and subject of the listed official sources, not a universal mandatory team list. Select teams and safeguards using the actual organisation and applicable requirements.\u003c/p>\u003ch3>Run one departure through the teams\u003c/h3>\u003cp>HR supplies date and status; IT and system owners remove access across the relevant tools; the manager confirms coverage; the process owner retains dated records and tracks exceptions; an objective reviewer tests the process where required.\u003c/p>\u003ch3>Keep management in the loop\u003c/h3>\u003cp>Leadership approves resources and risk decisions. Providers coordinate agreed tasks. Reusing controls helps, but different scope and evidence expectations still need checking.\u003c/p>\u003cdiv class=\"course-table\">\u003ctable>\u003cthead>\u003ctr>\u003cth>Requirement\u003c/th>\u003cth>Teams commonly needed\u003c/th>\u003cth>Work to trace\u003c/th>\u003c/tr>\u003c/thead>\u003ctbody>\u003ctr>\u003ctd>ISO 27001\u003c/td>\u003ctd>Leadership, IT, engineering, HR, procurement, legal, facilities within scope\u003c/td>\u003ctd>Risk decisions, access, suppliers, people and relevant physical security\u003c/td>\u003c/tr>\u003ctr>\u003ctd>SOC 2\u003c/td>\u003ctd>Engineering, IT/security, operations, HR, supplier owners, leadership\u003c/td>\u003ctd>Controls of the described service and selected examination criteria\u003c/td>\u003c/tr>\u003ctr>\u003ctd>PCI DSS\u003c/td>\u003ctd>Payments, engineering, IT/security, operations, procurement\u003c/td>\u003ctd>Card environment, connected systems and service-provider responsibilities\u003c/td>\u003c/tr>\u003ctr>\u003ctd>DPDP\u003c/td>\u003ctd>Privacy/legal, product, marketing, HR, support, IT\u003c/td>\u003ctd>Applicable personal-data activities and staged legal duties\u003c/td>\u003c/tr>\u003ctr>\u003ctd>GDPR, where applicable\u003c/td>\u003ctd>Privacy/legal, product, marketing, HR, support, IT\u003c/td>\u003ctd>Personal-data purposes, rights, security and other applicable duties\u003c/td>\u003c/tr>\u003c/tbody>\u003c/table>\u003c/div>\u003cp>\u003cstrong>A privacy law does not become a general compliance certificate. Name owners and trace real work for each applicable requirement.\u003c/strong>\u003c/p>\u003c/section>\u003csection class=\"block course-section\" id=\"practice\" data-nav=\"Try it\">\u003cdiv class=\"sec-head\">\u003cspan class=\"sec-num\">Practice\u003c/span>\u003ch2>Who owns each departure task?\u003c/h2>\u003c/div>\u003cdiv class=\"practice\">\u003cp>Assign the task to the team doing the work.\u003c/p>\u003cfieldset>\u003clegend>Notify the company of the employee’s leaving date.\u003c/legend>\u003clabel>\u003cinput type=\"radio\" name=\"practice-role-0\" value=\"0\">HR / people team\u003c/label>\u003clabel>\u003cinput type=\"radio\" name=\"practice-role-0\" value=\"1\">Certification auditor\u003c/label>\u003clabel>\u003cinput type=\"radio\" name=\"practice-role-0\" value=\"2\">Marketing\u003c/label>\u003c/fieldset>\u003cfieldset>\u003clegend>Remove access and verify connected accounts are disabled.\u003c/legend>\u003clabel>\u003cinput type=\"radio\" name=\"practice-role-1\" value=\"0\">External assessor\u003c/label>\u003clabel>\u003cinput type=\"radio\" name=\"practice-role-1\" value=\"1\">IT / system owners\u003c/label>\u003clabel>\u003cinput type=\"radio\" name=\"practice-role-1\" value=\"2\">Sales\u003c/label>\u003c/fieldset>\u003cfieldset>\u003clegend>Approve risk decisions and provide resources.\u003c/legend>\u003clabel>\u003cinput type=\"radio\" name=\"practice-role-2\" value=\"0\">Company leadership\u003c/label>\u003clabel>\u003cinput type=\"radio\" name=\"practice-role-2\" value=\"1\">The evidence tool\u003c/label>\u003clabel>\u003cinput type=\"radio\" name=\"practice-role-2\" value=\"2\">The certificate designer\u003c/label>\u003c/fieldset>\u003cbutton type=\"button\" id=\"practice-check\">Check assignments\u003c/button>\u003cp class=\"feedback-answer\" id=\"practice-result\" role=\"status\" hidden>\u003c/p>\u003c/div>\u003c/section>\u003csection class=\"block course-section\" id=\"sources\" data-nav=\"Sources\">\u003cdiv class=\"sec-head\">\u003cspan class=\"sec-num\">Read\u003c/span>\u003ch2>Original sources\u003c/h2>\u003c/div>\u003cp>Official sources establish requirements. Vendor pages describe their own services and prices. Tara Tickets is fictional. Checked 23 November 2026.\u003c/p>\u003col>\u003cli>\u003ca href=\"https://www.scrut.io/faqs/general\" target=\"_blank\" rel=\"noopener\">Scrut controls and evidence FAQ\u003c/a>\u003c/li>\u003cli>\u003ca href=\"https://www.iso.org/standard/27001\" target=\"_blank\" rel=\"noopener\">ISO 27001 information security management\u003c/a>\u003c/li>\u003cli>\u003ca href=\"https://www.pcisecuritystandards.org/standards/pci-dss/\" target=\"_blank\" rel=\"noopener\">PCI DSS standard and scope\u003c/a>\u003c/li>\u003cli>\u003ca href=\"https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services\" target=\"_blank\" rel=\"noopener\">AICPA SOC suite of services\u003c/a>\u003c/li>\u003cli>\u003ca href=\"https://commission.europa.eu/law/law-topic/data-protection/data-protection-explained_en\" target=\"_blank\" rel=\"noopener\">European Commission data protection explained\u003c/a>\u003c/li>\u003cli>\u003ca href=\"https://www.meity.gov.in/static/uploads/2025/11/53450e6e5dc0bfa85ebd78686cadad39.pdf\" target=\"_blank\" rel=\"noopener\">MeitY DPDP Rules commencement\u003c/a>\u003c/li>\u003c/ol>\u003c/section>\u003cdiv class=\"course-nav\">\u003ca href=\"../pci-and-perimattic/index.html\">Previous lesson\u003c/a>\u003ca href=\"../choose-first-offering/index.html\">Next: Which requirements should you focus on?\u003c/a>\u003c/div>","intro":"\u003cdiv class=\"course-kicker\">\u003ca href=\"../index.html\">Six-part course\u003c/a> · Lesson 5 of 6\u003c/div>\u003ch2 style=\"margin-bottom:20px\">Which teams have to do the work?\u003c/h2>","capstoneFields":[["customer","Who is your customer?"],["requirement","What exact requirement or customer request applies?"],["scope","Which systems, data and activities are covered?"],["deliverables","What will you deliver?"],["exclusions","What is excluded or charged separately?"],["owners","What do you, the customer and the assessor each handle?"],["partner","Which independent assessment partner or qualification is needed?"],["budget","What fee, delivery costs and time allowance will you use?"],["maintenance","How will the customer maintain the work?"]]};const main=document.querySelector('main.content');if(!main)return;const intro=document.createElement('div');intro.innerHTML=d.intro;main.prepend(intro);const shell=document.createElement('div');shell.innerHTML=d.extra;const quiz=main.querySelector('#quiz');const worked=shell.querySelector('#worked-example'),practice=shell.querySelector('#practice');main.insertBefore(worked,quiz);main.insertBefore(practice,quiz);while(shell.firstChild)main.appendChild(shell.firstChild);const side=document.querySelector('#sidebar ol');if(side){for(const [id,label] of [['worked-example','Worked example'],['practice','Try it'],['sources','Sources'],...(d.item.number===6?[['capstone','Your first offer']]:[])]){const li=document.createElement('li'),a=document.createElement('a');a.href='#'+id;a.textContent=label;li.appendChild(a);side.appendChild(li);}}for(const c of d.refs){const sec=document.getElementById('c-'+c.id);if(!sec)continue;const p=document.createElement('p');p.className='course-source';p.append('Sources: ');c.refs.forEach((idx,i)=>{const s=d.sources[idx];if(!s)return;if(i)p.append(' · ');const a=document.createElement('a');a.href=s.url;a.target='_blank';a.rel='noopener';a.textContent=s.title;p.appendChild(a);});sec.appendChild(p);}const ex=d.item.exercise;const result=document.getElementById('practice-result');const show=text=>{result.hidden=false;result.textContent=text;};if(ex.type==='quote'){const fmt=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n);const update=()=>{const n=id=>Math.max(0,Number(document.getElementById('quote-'+id).value)||0);const revenue=n('revenue'),before=revenue-n('implementer')-n('expenses'),time=n('hours')*n('rate'),profit=before-time;document.getElementById('quote-before').textContent=fmt(before);document.getElementById('quote-time').textContent=fmt(time);document.getElementById('quote-profit').textContent=fmt(profit);document.getElementById('quote-margin').textContent=revenue?(profit/revenue*100).toFixed(1)+'%':'No revenue';};document.querySelectorAll('[id^="quote-"]').forEach(el=>el.addEventListener('input',update));update();}else document.getElementById('practice-check').addEventListener('click',()=>{if(ex.type==='sequence'){const selects=Array.from(document.querySelectorAll('select[data-correct]'));if(selects.some(s=>!s.value))return show('Choose a position for every step first.');const count=selects.filter(s=>s.value===s.dataset.correct).length;show(count===5?'All five steps are in order. Scope and requirements come first; continuing checks come after assessment.':count+' of 5 positions are correct. Start by agreeing the requirement and scope, then find gaps before implementing fixes.');}if(ex.type==='choice'){const pick=document.querySelector('input[name="practice-choice"]:checked');if(!pick)return show('Choose an answer first.');const o=ex.options[Number(pick.value)];show((o.correct?'Correct. ':'Try again. ')+o.why);}if(ex.type==='roles'){const picks=ex.items.map((_,i)=>document.querySelector('input[name="practice-role-'+i+'"]:checked'));if(picks.some(p=>!p))return show('Choose a provider or owner for each situation first.');const score=picks.filter((p,i)=>Number(p.value)===ex.items[i].answer).length;show(score+' of '+ex.items.length+' correct. '+ex.items.map((x,i)=>(i+1)+'. '+x.options[x.answer]+': '+x.why).join(' '));}});const key='compliance-course-progress-v1';const score=document.getElementById('score');new MutationObserver(()=>{if(!score)return;const m=score.textContent.match(/3 of 3 answered.*?(\d+) correct/);if(!m)return;try{const p=JSON.parse(localStorage.getItem(key)||'{}');p[d.item.slug]={complete:true,correct:Number(m[1])};localStorage.setItem(key,JSON.stringify(p));}catch(e){}}).observe(score,{childList:true,subtree:true,characterData:true});if(d.item.number===6){const draftKey='compliance-course-offer-v1';try{const saved=JSON.parse(localStorage.getItem(draftKey)||'{}');for(const [id] of d.capstoneFields)document.getElementById('offer-'+id).value=saved[id]||'';}catch(e){}document.getElementById('save-offer').addEventListener('click',()=>{const v={};for(const [id] of d.capstoneFields)v[id]=document.getElementById('offer-'+id).value;try{localStorage.setItem(draftKey,JSON.stringify(v));document.getElementById('offer-status').textContent='Draft saved in this browser only.';}catch(e){document.getElementById('offer-status').textContent='This browser could not save the draft. Use Copy my offer.';}});document.getElementById('copy-offer').addEventListener('click',async()=>{const text=d.capstoneFields.map(([id,label])=>label+'\n'+document.getElementById('offer-'+id).value).join('\n\n');try{await navigator.clipboard.writeText(text);document.getElementById('offer-status').textContent='Offer copied.';}catch(e){document.getElementById('offer-status').textContent='Copy was unavailable. Select and copy your answers manually.';}});}})();</script></body>
+</html>
